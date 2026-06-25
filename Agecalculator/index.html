@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Age Calculator</title>
+    
+    <!-- SEO Optimization -->
+    <meta name="description" content="Calculate your exact age in years, months, and days instantly. See total days lived, live ticking seconds, birthday countdown, moon phase, and zodiac vector art.">
+    <meta name="keywords" content="age calculator, exact age calculator, free age calculator india, calculate age online, days lived calculator, next birthday countdown, zodiac sign finder, moon phase calculator">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="index.html">
+    
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Age Calculator">
+    <meta property="og:description" content="Calculate your exact age in years, months, and days. See live seconds ticker, birthday countdown, zodiac sign with vector art, and moon phase.">
+    <meta property="og:url" content="index.html">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1508962914676-134849a727f0?q=80&w=600&auto=format&fit=crop">
+    
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- Particle canvas overlay -->
+    <canvas id="particle-canvas"></canvas>
+
+    <!-- Aurora Orbs -->
+    <div class="orb" style="width: 560px; height: 560px; top: -180px; left: -180px; background: radial-gradient(circle, rgba(139,92,246,.13) 0%, transparent 70%); animation: breathe 7s ease-in-out infinite;"></div>
+    <div class="orb" style="width: 480px; height: 480px; top: -100px; right: -140px; background: radial-gradient(circle, rgba(236,72,153,.11) 0%, transparent 70%); animation: breathe 9s ease-in-out infinite 2s;"></div>
+    <div class="orb" style="width: 400px; height: 400px; bottom: -120px; left: 35%; background: radial-gradient(circle, rgba(34,211,238,.08) 0%, transparent 70%); animation: breathe 8s ease-in-out infinite 4s;"></div>
+
+    <!-- Navigation Header -->
+    <header class="site-header">
+        <div class="nav-container">
+            <a href="index.html" class="logo-link" id="home-logo">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 6V12L16 14M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke="url(#logo-grad)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <defs>
+                        <linearGradient id="logo-grad" x1="2" y1="2" x2="22" y2="22" gradientUnits="userSpaceOnUse">
+                            <stop stop-color="#a855f7" />
+                            <stop offset="1" stop-color="#06b6d4" />
+                        </linearGradient>
+                    </defs>
+                </svg>
+                <span class="logo-text">Aura Age</span>
+            </a>
+            <div class="nav-actions">
+                <a href="#more-tools" class="nav-menu-link hide-mobile">Free Tools</a>
+                <button class="nav-menu-link" id="login-btn" style="background: var(--card-bg); border: 1px solid var(--card-border); cursor: pointer; color: var(--text-color); padding: 8px 16px; border-radius: 20px;">Login</button>
+                <button class="theme-toggle-btn" id="theme-toggle" aria-label="Toggle light and dark mode">
+                    <!-- Sun Icon -->
+                    <svg class="sun-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="5" stroke-width="2" stroke-linecap="round"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3" stroke-width="2" stroke-linecap="round"></line>
+                        <line x1="12" y1="21" x2="12" y2="23" stroke-width="2" stroke-linecap="round"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" stroke-width="2" stroke-linecap="round"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" stroke-width="2" stroke-linecap="round"></line>
+                        <line x1="1" y1="12" x2="3" y2="12" stroke-width="2" stroke-linecap="round"></line>
+                        <line x1="21" y1="12" x2="23" y2="12" stroke-width="2" stroke-linecap="round"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" stroke-width="2" stroke-linecap="round"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" stroke-width="2" stroke-linecap="round"></line>
+                    </svg>
+                    <!-- Moon Icon -->
+                    <svg class="moon-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="app-container">
+        
+        <!-- Tagline / Title Section -->
+        <div style="text-align: center; max-width: 540px; margin: 0 auto 2rem auto; z-index: 1;">
+            <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 16px;">
+                <div class="dot"></div>
+                <span style="color: #22D3EE; font-size: 11px; letter-spacing: .18em; text-transform: uppercase; font-weight: 600;">Live age counter</span>
+            </div>
+            <h1 style="margin: 0; line-height: 1.08; letter-spacing: -.03em; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                <span style="font-size: clamp(2rem,5.5vw,3.2rem); font-weight: 800; color: #a855f7;">How old are you,</span>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span class="gnum" style="font-size: clamp(2.8rem,8vw,5rem); font-weight: 900; font-family: 'Space Grotesk', sans-serif;">Really</span>
+                    <span style="font-size: clamp(2.5rem,7vw,4.5rem);">🤩</span>
+                </div>
+            </h1>
+            <p style="color: var(--text-muted); font-size: .9rem; margin-top: 14px; letter-spacing: .01em;">
+                Your age down to the second — and every stat in between.
+            </p>
+        </div>
+
+        <!-- Top Banner Ad Slot -->
+        <div class="ad-slot top-ad" id="ad-header-slot">
+            <span class="ad-label">Sponsored</span>
+            <span class="ad-placeholder-text">Ad Slot: Top Header Banner (Responsive)</span>
+        </div>
+
+        <!-- Date Picker Card -->
+        <div style="margin-bottom: 2rem; text-align: center; z-index: 1; width: 100%;">
+            <div style="color: var(--text-muted); font-size: 11px; letter-spacing: .18em; text-transform: uppercase; margin-bottom: 14px;">Enter Your Birth Date</div>
+            <form id="age-calc-form" style="display: flex; flex-direction: column; align-items: center; gap: 14px; width: 100%;">
+                <div class="form-group">
+                    <input
+                        type="text"
+                        id="dob"
+                        class="glass-input"
+                        placeholder="DD-MM-YY"
+                        maxlength="10"
+                        inputmode="numeric"
+                        autocomplete="off"
+                        spellcheck="false"
+                        required
+                        aria-required="true"
+                        aria-label="Date of birth in DD-MM-YY format"
+                    >
+                    <div style="margin-top: 8px; font-size: 11px; color: var(--text-muted); letter-spacing: .08em;">
+                        Example&nbsp;: &nbsp;<strong style="color: rgba(168,85,247,.7);">25-06-98</strong>&nbsp; or &nbsp;<strong style="color: rgba(168,85,247,.7);">25-06-1998</strong>
+                    </div>
+                </div>
+                <button type="submit" class="glass-btn" style="max-width: 680px; width: 100%;">
+                    <span>Calculate Exact Age</span>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                </button>
+            </form>
+        </div>
+
+        <!-- Placeholder Tiles -->
+        <div id="placeholder-tiles" style="text-align: center; margin-top: 1rem; z-index: 1; position: relative;">
+            <div class="placeholder-tiles-grid">
+                <div>
+                    <div class="placeholder-tile" style="color: #A78BFA;">--</div>
+                    <div class="placeholder-label">Years</div>
+                </div>
+                <div>
+                    <div class="placeholder-tile" style="color: #F472B6;">--</div>
+                    <div class="placeholder-label">Months</div>
+                </div>
+                <div>
+                    <div class="placeholder-tile" style="color: #FB923C;">--</div>
+                    <div class="placeholder-label">Days</div>
+                </div>
+                <div>
+                    <div class="placeholder-tile" style="color: #22D3EE;">--</div>
+                    <div class="placeholder-label">Hours</div>
+                </div>
+                <div>
+                    <div class="placeholder-tile" style="color: #34D399;">--</div>
+                    <div class="placeholder-label">Secs</div>
+                </div>
+            </div>
+            <p style="color: var(--text-muted); font-size: .82rem; margin-top: 1.75rem;">
+                ↑ Enter your date manually to see your full stats
+            </p>
+        </div>
+
+        <!-- Upgraded Results Grid (Dynamic) -->
+        <div class="results-container" id="results" style="width: 100%; z-index: 1; position: relative;">
+            
+            <!-- Big Y / M / D -->
+            <div class="glass" style="padding: 2.25rem 1.5rem; text-align: center; margin-bottom: 1rem;">
+                <div style="color: var(--text-muted); font-size: 10px; letter-spacing: .18em; text-transform: uppercase; margin-bottom: 1.75rem;">Exact age</div>
+                <div class="result-main-grid">
+                    <div style="text-align: center;">
+                        <div class="gnum" id="res-years" style="font-size: clamp(3.8rem,13vw,6.5rem); font-weight: 900; letter-spacing: -.05em; line-height: 1;">00</div>
+                        <div style="color: var(--text-muted); font-size: 10px; letter-spacing: .18em; text-transform: uppercase; margin-top: 10px;">Years</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div class="gnum" id="res-months" style="font-size: clamp(3.8rem,13vw,6.5rem); font-weight: 900; letter-spacing: -.05em; line-height: 1;">00</div>
+                        <div style="color: var(--text-muted); font-size: 10px; letter-spacing: .18em; text-transform: uppercase; margin-top: 10px;">Months</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div class="gnum" id="res-days" style="font-size: clamp(3.8rem,13vw,6.5rem); font-weight: 900; letter-spacing: -.05em; line-height: 1;">00</div>
+                        <div style="color: var(--text-muted); font-size: 10px; letter-spacing: .18em; text-transform: uppercase; margin-top: 10px;">Days</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Live seconds ticker -->
+            <div class="glass" style="padding: 1.5rem 1.25rem; text-align: center; border-color: rgba(34,211,238,.18); margin-bottom: 1rem;">
+                <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 10px;">
+                    <div class="dot"></div>
+                    <span style="color: var(--text-muted); font-size: 10px; letter-spacing: .18em; text-transform: uppercase;">Seconds you've been alive</span>
+                </div>
+                <div class="sec-val" id="res-seconds">0</div>
+            </div>
+
+            <!-- Stat grid 2x3 (6 cards) -->
+            <div class="stat-grid-6">
+                <div class="mini">
+                    <div id="stat-minutes" style="font-size: clamp(1.25rem,3.5vw,1.75rem); font-weight: 700; color: #A78BFA; letter-spacing: -.02em; font-variant-numeric: tabular-nums;">0</div>
+                    <div style="color: var(--text-muted); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; margin-top: 6px;">Minutes</div>
+                </div>
+                <div class="mini">
+                    <div id="stat-hours" style="font-size: clamp(1.25rem,3.5vw,1.75rem); font-weight: 700; color: #EC4899; letter-spacing: -.02em; font-variant-numeric: tabular-nums;">0</div>
+                    <div style="color: var(--text-muted); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; margin-top: 6px;">Hours</div>
+                </div>
+                <div class="mini">
+                    <div id="stat-days" style="font-size: clamp(1.25rem,3.5vw,1.75rem); font-weight: 700; color: #FB923C; letter-spacing: -.02em; font-variant-numeric: tabular-nums;">0</div>
+                    <div style="color: var(--text-muted); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; margin-top: 6px;">Days</div>
+                </div>
+                <div class="mini">
+                    <div id="stat-weeks" style="font-size: clamp(1.25rem,3.5vw,1.75rem); font-weight: 700; color: #22D3EE; letter-spacing: -.02em; font-variant-numeric: tabular-nums;">0</div>
+                    <div style="color: var(--text-muted); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; margin-top: 6px;">Weeks</div>
+                </div>
+                <div class="mini">
+                    <div id="stat-months" style="font-size: clamp(1.25rem,3.5vw,1.75rem); font-weight: 700; color: #34D399; letter-spacing: -.02em; font-variant-numeric: tabular-nums;">0</div>
+                    <div style="color: var(--text-muted); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; margin-top: 6px;">Months</div>
+                </div>
+                <div class="mini">
+                    <div id="stat-bday" style="font-size: clamp(1.25rem,3.5vw,1.75rem); font-weight: 700; color: #FBBF24; letter-spacing: -.02em; font-variant-numeric: tabular-nums;">0d</div>
+                    <div style="color: var(--text-muted); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; margin-top: 6px;">Next Birthday</div>
+                </div>
+            </div>
+
+            <!-- Bio stats (2 cards) -->
+            <div class="stat-grid-2">
+                <div class="mini">
+                    <div id="bio-hearts" style="font-size: clamp(1.2rem,3vw,1.6rem); font-weight: 700; color: #F87171; letter-spacing: -.02em; font-variant-numeric: tabular-nums;">0</div>
+                    <div style="color: var(--text-muted); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; margin-top: 6px;">Heartbeats</div>
+                </div>
+                <div class="mini">
+                    <div id="bio-breaths" style="font-size: clamp(1.2rem,3vw,1.6rem); font-weight: 700; color: #86EFAC; letter-spacing: -.02em; font-variant-numeric: tabular-nums;">0</div>
+                    <div style="color: var(--text-muted); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; margin-top: 6px;">Breaths taken</div>
+                </div>
+            </div>
+
+            <!-- Life progress bar -->
+            <div class="glass" style="padding: 1.5rem; margin-bottom: 1rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                    <span style="color: rgba(255,255,255,.38); font-size: 11px; letter-spacing: .15em; text-transform: uppercase;">Life journey</span>
+                    <span id="life-pct-label" style="color: rgba(255,255,255,.58); font-size: 13px; font-weight: 600;">0% of 80 yrs</span>
+                </div>
+                <progress id="life-progress" value="0" max="100"></progress>
+            </div>
+
+            <!-- Zodiac + day born + moon phase (3 cards!) -->
+            <div class="personality-panel-grid">
+                <div class="mini" style="background: rgba(139,92,246,.08); border-color: rgba(139,92,246,.22); display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                    <div id="pers-zodiac-symbol" class="zodiac-image-container"></div>
+                    <div id="pers-zodiac-name" style="color: #C4B5FD; font-weight: 700; font-size: 1rem;">Capricorn</div>
+                    <div style="color: var(--text-muted); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; margin-top: 5px;">Zodiac sign</div>
+                </div>
+                <div class="mini" style="background: rgba(236,72,153,.06); border-color: rgba(236,72,153,.18); display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                    <div id="pers-day-born" style="font-size: 1.5rem; font-weight: 800; color: #F472B6; margin-bottom: 10px; margin-top: 15px;">Monday</div>
+                    <div style="color: var(--text-muted); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; margin-top: 5px;">Day born</div>
+                </div>
+                <div class="mini" style="background: rgba(34,211,238,.06); border-color: rgba(34,211,238,.18); display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                    <div id="pers-moon-symbol" style="font-size: 2.2rem; margin-bottom: 10px; margin-top: 15px;">🌑</div>
+                    <div id="pers-moon-name" style="color: #67e8f9; font-weight: 700; font-size: 1rem;">New Moon</div>
+                    <div style="color: var(--text-muted); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; margin-top: 5px;">Moon Phase</div>
+                </div>
+            </div>
+
+            <!-- Action Triggers -->
+            <div class="results-actions">
+                <button type="button" class="glass-btn btn-secondary" id="calc-again-btn">
+                    <span>Calculate Again</span>
+                </button>
+            </div>
+
+            <!-- Share widget -->
+            <div class="share-panel">
+                <div class="share-title">Share Your Age Statistics</div>
+                <div class="share-buttons">
+                    <a href="#" target="_blank" class="share-btn whatsapp" id="share-wa">
+                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.248 8.477 3.517 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.713-1.458L0 24zm6.75-14.244c-.251-.527-.51-.533-.752-.542-.196-.007-.422-.008-.648-.008-.226 0-.594.085-.904.424-.311.338-1.187 1.161-1.187 2.83 0 1.669 1.216 3.28 1.385 3.507.169.227 2.392 3.652 5.795 5.123 2.83 1.22 3.407.977 4.086.914.679-.063 2.187-.892 2.499-1.756.312-.863.312-1.603.218-1.756-.093-.153-.344-.245-.722-.434-.378-.189-2.228-1.099-2.571-1.224-.343-.126-.593-.189-.843.19-.251.378-.968 1.224-1.187 1.477-.22.253-.439.284-.817.095-.378-.189-1.597-.59-3.042-1.881-1.124-.997-1.884-2.23-2.103-2.609-.22-.378-.024-.583.165-.771.171-.169.379-.434.569-.652.19-.217.253-.371.379-.619.125-.248.062-.465-.031-.653z"/></svg>
+                        WhatsApp
+                    </a>
+                    <a href="#" target="_blank" class="share-btn telegram" id="share-tg">
+                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M11.944 0C5.344 0 0 5.344 0 12c0 6.656 5.344 12 11.944 12 6.656 0 12-5.344 12-12 0-6.656-5.344-12-12-12zm5.888 7.728l-1.888 8.896c-.144.64-.528.8-.16.144l-2.88-2.128-1.392 1.344c-.16.16-.288.288-.592.288l.208-2.944 5.36-4.848c.24-.208-.048-.32-.368-.112L9.48 13.088l-2.864-.896c-.624-.192-.64-.624.128-.928L16.48 7.2c.512-.192.96.112.752.88v.112z"/></svg>
+                        Telegram
+                    </a>
+                    <a href="#" target="_blank" class="share-btn twitter" id="share-tw">
+                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                        Twitter
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- In-Content Ad Slot -->
+        <div class="ad-slot inline-ad" id="ad-content-slot">
+            <span class="ad-label">Sponsored</span>
+            <span class="ad-placeholder-text">Ad Slot: In-Content Banner (Below results)</span>
+        </div>
+
+        <!-- Facts Box -->
+        <section class="glass-card facts-card" id="did-you-know">
+            <div class="facts-header">
+                <span style="font-size: 1.3rem;">💡</span>
+                <h3 class="facts-title">Did You Know?</h3>
+            </div>
+            <div class="fact-text-container">
+                <p class="fact-text" id="fact-text">Loading interesting fact...</p>
+            </div>
+        </section>
+
+        <!-- More Free Tools section — Full Category Directory -->
+        <section class="more-tools-section" id="more-tools">
+            <h2 class="section-title" style="font-size: clamp(2rem, 5vw, 2.8rem); font-weight: 800;">More Free Calculators</h2>
+            <p style="text-align:center; color:var(--text-muted); font-size:.9rem; margin-bottom:2rem; margin-top:-1rem;">Browse all calculator categories below</p>
+
+            <!-- Category Tabs -->
+            <div class="cat-tabs square-tabs" id="cat-tabs">
+                <button class="cat-tab square-tab active" data-cat="financial" id="tab-financial">
+                    <span class="tab-icon">💰</span>
+                    <span class="tab-name">Financial</span>
+                    <span class="tab-desc">Investment & Loans</span>
+                </button>
+                <button class="cat-tab square-tab" data-cat="math" id="tab-math">
+                    <span class="tab-icon">➗</span>
+                    <span class="tab-name">Math</span>
+                    <span class="tab-desc">Fractions & Roots</span>
+                </button>
+                <button class="cat-tab square-tab" data-cat="business" id="tab-business">
+                    <span class="tab-icon">📊</span>
+                    <span class="tab-name">Business</span>
+                    <span class="tab-desc">GST, VAT & Margin</span>
+                </button>
+                <button class="cat-tab square-tab" data-cat="conversions" id="tab-conversions">
+                    <span class="tab-icon">🔄</span>
+                    <span class="tab-name">Conversions</span>
+                    <span class="tab-desc">Units & Numbers</span>
+                </button>
+                <button class="cat-tab square-tab" data-cat="misc" id="tab-misc">
+                    <span class="tab-icon">🎲</span>
+                    <span class="tab-name">Misc Tools</span>
+                    <span class="tab-desc">Pets, Passwords & Tips</span>
+                </button>
+            </div>
+
+            <!-- FINANCIAL -->
+            <div class="cat-panel active" id="cat-financial">
+                <div class="cat-subhead">📈 Investment</div>
+                <div class="chip-grid square-chips">
+                    <a class="chip chip-square" href="financial-calculators.html#simple-interest"><span style="font-size:1.5rem;margin-bottom:6px">💹</span> Simple Interest</a>
+                    <a class="chip chip-square" href="financial-calculators.html#compound-interest"><span style="font-size:1.5rem;margin-bottom:6px">📈</span> Compound Interest</a>
+                    <a class="chip chip-square" href="financial-calculators.html#apy"><span style="font-size:1.5rem;margin-bottom:6px">📊</span> APY</a>
+                    <a class="chip chip-square" href="financial-calculators.html#cagr"><span style="font-size:1.5rem;margin-bottom:6px">🚀</span> CAGR</a>
+                    <a class="chip chip-square" href="financial-calculators.html#roi"><span style="font-size:1.5rem;margin-bottom:6px">💎</span> ROI</a>
+                    <a class="chip chip-square" href="financial-calculators.html#rule72"><span style="font-size:1.5rem;margin-bottom:6px">⏱️</span> Rule of 72</a>
+                    <a class="chip chip-square" href="financial-calculators.html#net-worth"><span style="font-size:1.5rem;margin-bottom:6px">🏦</span> Net Worth</a>
+                    <a class="chip chip-square" href="financial-calculators.html#present-value"><span style="font-size:1.5rem;margin-bottom:6px">⏪</span> Present Value</a>
+                    <a class="chip chip-square" href="financial-calculators.html#savings"><span style="font-size:1.5rem;margin-bottom:6px">🐖</span> Savings</a>
+                    <a class="chip chip-square" href="financial-calculators.html#rental-yield"><span style="font-size:1.5rem;margin-bottom:6px">🏢</span> Rental Yield</a>
+                </div>
+                <div class="cat-subhead" style="margin-top:1.5rem;">🏦 Loans & Mortgages</div>
+                <div class="chip-grid square-chips">
+                    <a class="chip chip-square" href="financial-calculators.html#mortgage"><span style="font-size:1.5rem;margin-bottom:6px">🏠</span> Mortgage</a>
+                    <a class="chip chip-square" href="financial-calculators.html#auto-loan"><span style="font-size:1.5rem;margin-bottom:6px">🚗</span> Auto Loan</a>
+                    <a class="chip chip-square" href="financial-calculators.html#dti"><span style="font-size:1.5rem;margin-bottom:6px">📋</span> DTI Ratio</a>
+                    <a class="chip chip-square" href="financial-calculators.html#loan-affordability"><span style="font-size:1.5rem;margin-bottom:6px">🔑</span> Affordability</a>
+                    <a class="chip chip-square" href="financial-calculators.html#discount"><span style="font-size:1.5rem;margin-bottom:6px">🏷️</span> Discount</a>
+                </div>
+            </div>
+
+            <!-- MATH -->
+            <div class="cat-panel" id="cat-math">
+                <div class="chip-grid square-chips">
+                    <a class="chip chip-math chip-square" href="math-calculators.html#fraction"><span style="font-size:1.5rem;margin-bottom:6px">➗</span> Fractions</a>
+                    <a class="chip chip-math chip-square" href="math-calculators.html#simplifier"><span style="font-size:1.5rem;margin-bottom:6px">✂️</span> Simplifier</a>
+                    <a class="chip chip-math chip-square" href="math-calculators.html#gcf"><span style="font-size:1.5rem;margin-bottom:6px">🔗</span> GCF</a>
+                    <a class="chip chip-math chip-square" href="math-calculators.html#lcm"><span style="font-size:1.5rem;margin-bottom:6px">🔢</span> LCM</a>
+                    <a class="chip chip-math chip-square" href="math-calculators.html#lcd"><span style="font-size:1.5rem;margin-bottom:6px">📐</span> LCD</a>
+                    <a class="chip chip-math chip-square" href="math-calculators.html#percentage"><span style="font-size:1.5rem;margin-bottom:6px">💯</span> Percentage</a>
+                    <a class="chip chip-math chip-square" href="math-calculators.html#rounding"><span style="font-size:1.5rem;margin-bottom:6px">🎯</span> Rounding</a>
+                    <a class="chip chip-math chip-square" href="math-calculators.html#sqrt"><span style="font-size:1.5rem;margin-bottom:6px">√</span> Square Root</a>
+                </div>
+            </div>
+
+            <!-- BUSINESS -->
+            <div class="cat-panel" id="cat-business">
+                <div class="chip-grid square-chips">
+                    <a class="chip chip-biz chip-square" href="business-calculators.html#gst"><span style="font-size:1.5rem;margin-bottom:6px">🏷️</span> GST</a>
+                    <a class="chip chip-biz chip-square" href="business-calculators.html#vat"><span style="font-size:1.5rem;margin-bottom:6px">💶</span> VAT</a>
+                    <a class="chip chip-biz chip-square" href="business-calculators.html#sales-tax"><span style="font-size:1.5rem;margin-bottom:6px">🧾</span> Sales Tax</a>
+                    <a class="chip chip-biz chip-square" href="business-calculators.html#discount"><span style="font-size:1.5rem;margin-bottom:6px">🎁</span> Discount</a>
+                    <a class="chip chip-biz chip-square" href="business-calculators.html#margin"><span style="font-size:1.5rem;margin-bottom:6px">📈</span> Margin</a>
+                    <a class="chip chip-biz chip-square" href="business-calculators.html#markup"><span style="font-size:1.5rem;margin-bottom:6px">💲</span> Markup</a>
+                    <a class="chip chip-biz chip-square" href="business-calculators.html#commission"><span style="font-size:1.5rem;margin-bottom:6px">🤝</span> Commission</a>
+                    <a class="chip chip-biz chip-square" href="business-calculators.html#cpc"><span style="font-size:1.5rem;margin-bottom:6px">🖱️</span> CPC</a>
+                    <a class="chip chip-biz chip-square" href="business-calculators.html#cpm"><span style="font-size:1.5rem;margin-bottom:6px">📺</span> CPM</a>
+                    <a class="chip chip-biz chip-square" href="business-calculators.html#cash-ratio"><span style="font-size:1.5rem;margin-bottom:6px">🏧</span> Cash Ratio</a>
+                    <a class="chip chip-biz chip-square" href="business-calculators.html#debt-ratio"><span style="font-size:1.5rem;margin-bottom:6px">⚖️</span> Debt Ratio</a>
+                    <a class="chip chip-biz chip-square" href="business-calculators.html#depreciation"><span style="font-size:1.5rem;margin-bottom:6px">📉</span> Depreciation</a>
+                </div>
+            </div>
+
+            <!-- CONVERSIONS -->
+            <div class="cat-panel" id="cat-conversions">
+                <div class="cat-subhead">📐 Unit Conversion</div>
+                <div class="chip-grid square-chips">
+                    <a class="chip chip-conv chip-square" href="conversions.html#length"><span style="font-size:1.5rem;margin-bottom:6px">📏</span> Length</a>
+                    <a class="chip chip-conv chip-square" href="conversions.html#weight"><span style="font-size:1.5rem;margin-bottom:6px">⚖️</span> Weight</a>
+                    <a class="chip chip-conv chip-square" href="conversions.html#temperature"><span style="font-size:1.5rem;margin-bottom:6px">🌡️</span> Temperature</a>
+                    <a class="chip chip-conv chip-square" href="conversions.html#area"><span style="font-size:1.5rem;margin-bottom:6px">📐</span> Area</a>
+                    <a class="chip chip-conv chip-square" href="conversions.html#volume"><span style="font-size:1.5rem;margin-bottom:6px">💧</span> Volume</a>
+                    <a class="chip chip-conv chip-square" href="conversions.html#pressure"><span style="font-size:1.5rem;margin-bottom:6px">🗜️</span> Pressure</a>
+                    <a class="chip chip-conv chip-square" href="conversions.html#time"><span style="font-size:1.5rem;margin-bottom:6px">⏱️</span> Time</a>
+                </div>
+                <div class="cat-subhead" style="margin-top:1.5rem;">🔢 Number Conversion</div>
+                <div class="chip-grid square-chips">
+                    <a class="chip chip-conv chip-square" href="conversions.html#dec-frac"><span style="font-size:1.5rem;margin-bottom:6px">🔢</span> Dec to Frac</a>
+                    <a class="chip chip-conv chip-square" href="conversions.html#dec-pct"><span style="font-size:1.5rem;margin-bottom:6px">%️⃣</span> Dec to Pct</a>
+                    <a class="chip chip-conv chip-square" href="conversions.html#frac-dec"><span style="font-size:1.5rem;margin-bottom:6px">➗</span> Frac to Dec</a>
+                    <a class="chip chip-conv chip-square" href="conversions.html#frac-pct"><span style="font-size:1.5rem;margin-bottom:6px">💯</span> Frac to Pct</a>
+                    <a class="chip chip-conv chip-square" href="conversions.html#pct-dec"><span style="font-size:1.5rem;margin-bottom:6px">📉</span> Pct to Dec</a>
+                    <a class="chip chip-conv chip-square" href="conversions.html#pct-frac"><span style="font-size:1.5rem;margin-bottom:6px">🍰</span> Pct to Frac</a>
+                    <a class="chip chip-conv chip-square" href="conversions.html#roman"><span style="font-size:1.5rem;margin-bottom:6px">🏛️</span> Roman Numeral</a>
+                </div>
+            </div>
+
+            <!-- MISCELLANEOUS -->
+            <div class="cat-panel" id="cat-misc">
+                <div class="chip-grid square-chips">
+                    <a class="chip chip-misc chip-square" href="age-difference.html"><span style="font-size:1.5rem;margin-bottom:6px">👥</span> Age Difference</a>
+                    <a class="chip chip-misc chip-square" href="birthday-countdown.html"><span style="font-size:1.5rem;margin-bottom:6px">🎉</span> Birthday Countdown</a>
+                    <a class="chip chip-misc chip-square" href="date-difference.html"><span style="font-size:1.5rem;margin-bottom:6px">🗓️</span> Date Difference</a>
+                    <a class="chip chip-misc chip-square" href="days-between.html"><span style="font-size:1.5rem;margin-bottom:6px">⏳</span> Days Between</a>
+                    <a class="chip chip-misc chip-square" href="retirement-calculator.html"><span style="font-size:1.5rem;margin-bottom:6px">🏖️</span> Retirement</a>
+                    <a class="chip chip-misc chip-square" href="zodiac-finder.html"><span style="font-size:1.5rem;margin-bottom:6px">✨</span> Zodiac Finder</a>
+                    <a class="chip chip-misc chip-square" href="misc-tools.html#cat-age"><span style="font-size:1.5rem;margin-bottom:6px">🐱</span> Cat Age</a>
+                    <a class="chip chip-misc chip-square" href="misc-tools.html#dog-age"><span style="font-size:1.5rem;margin-bottom:6px">🐶</span> Dog Age</a>
+                    <a class="chip chip-misc chip-square" href="misc-tools.html#day-of-week"><span style="font-size:1.5rem;margin-bottom:6px">📅</span> Day of Week</a>
+                    <a class="chip chip-misc chip-square" href="misc-tools.html#gpa"><span style="font-size:1.5rem;margin-bottom:6px">🎓</span> GPA Calculator</a>
+                    <a class="chip chip-misc chip-square" href="misc-tools.html#tip"><span style="font-size:1.5rem;margin-bottom:6px">💵</span> Tip Calculator</a>
+                    <a class="chip chip-misc chip-square" href="misc-tools.html#password"><span style="font-size:1.5rem;margin-bottom:6px">🔑</span> Passwords</a>
+                    <a class="chip chip-misc chip-square" href="misc-tools.html#random"><span style="font-size:1.5rem;margin-bottom:6px">🎲</span> Random Num</a>
+                    <a class="chip chip-misc chip-square" href="misc-tools.html#word-counter"><span style="font-size:1.5rem;margin-bottom:6px">📝</span> Word Counter</a>
+                    <a class="chip chip-misc chip-square" href="misc-tools.html#parlay"><span style="font-size:1.5rem;margin-bottom:6px">🎰</span> Parlay</a>
+                </div>
+            </div>
+
+
+
+
+        <!-- FAQ Section -->
+        <section class="faq-section" id="faq">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            <div class="faq-accordion">
+                <details class="faq-item" open>
+                    <summary>How to calculate age?</summary>
+                    <div class="faq-content">
+                        <p>To calculate age, subtract your year of birth from the current year. If your birthday has not occurred yet in the current calendar year, subtract one year from that total. Our exact age calculator processes this instantly, taking into account varying month lengths and leap years, to output your exact age in years, months, and days.</p>
+                    </div>
+                </details>
+                <details class="faq-item">
+                    <summary>What is exact age formula?</summary>
+                    <div class="faq-content">
+                        <p>The exact age formula calculates the elapsed time between your Date of Birth (DOB) and the target date:</p>
+                        <p style="margin: 10px 0; font-family: monospace; padding-left: 10px; border-left: 2px solid var(--accent-primary);">Age = Target Date - Date of Birth</p>
+                        <p>This is computed step-by-step: first, subtract the days; if negative, borrow days from the previous month. Next, subtract the months; if negative, borrow 12 months from the year value. Finally, subtract the years.</p>
+                    </div>
+                </details>
+                <details class="faq-item">
+                    <summary>How many days old am I?</summary>
+                    <div class="faq-content">
+                        <p>You can find out how many days old you are by calculating the total milliseconds elapsed between your birthdate and today, and converting that value to days. The formula is:</p>
+                        <p style="margin: 10px 0; font-family: monospace; padding-left: 10px; border-left: 2px solid var(--accent-primary);">Total Days = Math.floor(Time Difference in Milliseconds / (1000 * 60 * 60 * 24))</p>
+                        <p>Once you calculate your age using the form above, your total days and hours lived will be automatically computed and shown in the sub-metrics results section.</p>
+                    </div>
+                </details>
+            </div>
+        </section>
+
+
+
+    </main>
+
+    <!-- Footer Area -->
+    <footer class="site-footer">
+        <!-- Bottom Footer Ad slot -->
+        <div class="ad-slot bottom-ad" id="ad-footer-slot">
+            <span class="ad-label">Sponsored</span>
+            <span class="ad-placeholder-text">Ad Slot: Bottom Footer Banner (Leaderboard)</span>
+        </div>
+        
+        <div class="footer-nav">
+            <a href="index.html" class="footer-link">Home</a>
+            <a href="privacy-policy.html" class="footer-link">Privacy Policy</a>
+            <a href="terms.html" class="footer-link">Terms & Conditions</a>
+            <a href="disclaimer.html" class="footer-link">Disclaimer</a>
+            <a href="contact.html" class="footer-link">Contact Us</a>
+        </div>
+        
+        <p class="footer-copy">&copy; 2026 Aura Age. Built for speed and visual elegance. All rights reserved.</p>
+    </footer>
+
+
+
+    <!-- Main JavaScript -->
+    <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Free Tools & Calculators — Aura Age</title>
+<meta name="description" content="Miscellaneous tools — Cat & Dog Age, Password Generator, Word Counter, GPA, Tip Calculator, and more.">
+<link rel="stylesheet" href="css/style.css">
+<style>
+.page-hero{text-align:center;padding:110px 20px 30px;max-width:800px;margin:0 auto}
+.page-hero h1{font-size:clamp(1.8rem,5vw,2.8rem);font-weight:900;margin-bottom:8px;background:linear-gradient(135deg,#F59E0B,#D97706,#B45309);background-size:200% 200%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:gradFlow 5s ease infinite}
+.page-hero p{color:var(--text-muted);font-size:.95rem}
+.calc-tabs{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:900px;margin:0 auto 2rem;padding:0 20px}
+.calc-tab{padding:8px 16px;border-radius:50px;border:1.5px solid var(--card-border);background:var(--card-bg);color:var(--text-muted);font-size:.76rem;font-weight:600;cursor:pointer;transition:all .2s;font-family:'Space Grotesk',sans-serif;white-space:nowrap}
+.calc-tab:hover{border-color:rgba(245,158,11,.4);color:#FCD34D;transform:translateY(-2px)}
+.calc-tab.active{background:linear-gradient(135deg,rgba(245,158,11,.22),rgba(217,119,6,.12));border-color:rgba(245,158,11,.55);color:#FCD34D;box-shadow:0 4px 18px rgba(245,158,11,.18)}
+.calc-panel{display:none;max-width:680px;margin:0 auto;padding:0 20px 40px}
+.calc-panel.active{display:block;animation:fadeUp .35s ease both}
+.calc-card{backdrop-filter:blur(14px);background:var(--card-bg);border:1px solid var(--card-border);border-radius:22px;padding:2rem 1.5rem;position:relative;overflow:hidden}
+.calc-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#F59E0B,#FBBF24,#D97706)}
+.calc-card h2{font-size:1.3rem;font-weight:800;color:var(--text-color);margin-bottom:6px;font-family:'Space Grotesk',sans-serif}
+.calc-card .sub{color:var(--text-muted);font-size:.82rem;margin-bottom:1.5rem}
+.field{margin-bottom:1rem}
+.field label{display:block;font-size:.75rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px}
+.field input[type="number"],.field input[type="text"],.field select,.field textarea{width:100%;padding:.75rem 1rem;border-radius:12px;border:1.5px solid var(--input-border);background:var(--input-bg);color:var(--text-color);font-size:.95rem;outline:none;font-family:inherit;transition:border-color .2s,box-shadow .2s}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:#F59E0B;box-shadow:0 0 0 3px rgba(245,158,11,.18)}
+.field textarea{resize:vertical;min-height:150px;font-family:sans-serif}
+.checkbox-lbl{display:flex;align-items:center;gap:10px;font-size:.85rem;color:var(--text-muted);cursor:pointer;margin-bottom:8px}
+.btn-calc{width:100%;padding:13px;border-radius:12px;border:none;background:linear-gradient(135deg,#F59E0B,#D97706);color:#fff;font-size:1rem;font-weight:700;cursor:pointer;margin-top:.5rem;transition:all .3s;font-family:'Space Grotesk',sans-serif}
+.btn-calc:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(245,158,11,.3)}
+.result-box{margin-top:1.5rem;padding:1.25rem;border-radius:16px;background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.18);display:none}
+.result-box.show{display:block;animation:fadeUp .3s ease both}
+.result-box .big-num{font-size:clamp(1.6rem,5vw,2.4rem);font-weight:900;background:linear-gradient(135deg,#FCD34D,#F59E0B,#D97706);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-align:center;margin-bottom:.5rem;word-break:break-all}
+.result-box .detail{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.06);font-size:.85rem;color:var(--text-muted)}
+.result-box .detail span:last-child{color:var(--text-color);font-weight:600}
+.formula-box{margin-top:1rem;padding:10px 14px;border-radius:10px;background:rgba(0,0,0,.3);font-family:monospace;font-size:.75rem;color:rgba(255,255,255,.5);border-left:3px solid #F59E0B;line-height:1.6;word-break:break-all}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.gpa-row{display:grid;grid-template-columns:2fr 1fr 1fr auto;gap:8px;margin-bottom:8px}
+.rm-btn{background:rgba(239,68,68,.1);color:#EF4444;border:none;border-radius:8px;padding:0 12px;cursor:pointer;font-weight:bold}
+.add-btn{background:rgba(16,185,129,.1);color:#10B981;border:none;border-radius:8px;padding:8px 16px;cursor:pointer;font-weight:bold;margin-top:10px}
+.str-bar{height:6px;border-radius:3px;background:var(--input-bg);margin-top:10px;overflow:hidden}
+.str-fill{height:100%;width:0;transition:width .3s,background .3s}
+.word-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:15px}
+.word-stat{background:rgba(255,255,255,.05);padding:10px;border-radius:10px;text-align:center}
+.word-stat span{display:block;font-size:1.4rem;font-weight:800;color:#FCD34D}
+.word-stat label{font-size:.7rem;color:var(--text-muted);text-transform:uppercase}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes gradFlow{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+@media(max-width:500px){.calc-tab{font-size:.7rem;padding:6px 12px}.row2,.row3{grid-template-columns:1fr}.gpa-row{grid-template-columns:1fr 1fr 1fr auto}.word-stats{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<header class="site-header"><div class="nav-container">
+<a href="index.html" class="logo-link"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M12 6V12L16 14M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke="url(#lg)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><defs><linearGradient id="lg" x1="2" y1="2" x2="22" y2="22"><stop stop-color="#a855f7"/><stop offset="1" stop-color="#06b6d4"/></linearGradient></defs></svg><span class="logo-text">Aura Age</span></a>
+<div class="nav-actions"><a href="index.html" class="nav-menu-link">Home</a></div>
+</div></header>
+
+<div class="page-hero">
+<h1>🎲 Miscellaneous Tools</h1>
+<p>GPA, Passwords, Generators, Tip Calculators & Pet Age Tools.</p>
+</div>
+
+<div class="calc-tabs" id="tabs">
+<button class="calc-tab active" data-t="cat-age">🐱 Cat Age</button>
+<button class="calc-tab" data-t="dog-age">🐶 Dog Age</button>
+<button class="calc-tab" data-t="day-of-week">📅 Day of Week</button>
+<button class="calc-tab" data-t="gpa">🎓 GPA</button>
+<button class="calc-tab" data-t="tip">💵 Tip Calc</button>
+<button class="calc-tab" data-t="password">🔑 Password</button>
+<button class="calc-tab" data-t="random">🎲 Random Num</button>
+<button class="calc-tab" data-t="word-counter">📝 Word Counter</button>
+<button class="calc-tab" data-t="parlay">🎰 Parlay</button>
+</div>
+
+<!-- Panels -->
+<div id="panels">
+    
+    <!-- Cat Age -->
+    <div class="calc-panel active" id="panel-cat-age"><div class="calc-card">
+    <h2>🐱 Cat Age Calculator</h2><div class="sub">Convert cat years to human years</div>
+    <div class="field"><label>Cat's Age (Years)</label><input type="number" id="cat-y" placeholder="3"></div>
+    <button class="btn-calc" onclick="calcCat()">Calculate</button>
+    <div class="result-box" id="res-cat-age"></div>
+    </div></div>
+    
+    <!-- Dog Age -->
+    <div class="calc-panel" id="panel-dog-age"><div class="calc-card">
+    <h2>🐶 Dog Age Calculator</h2><div class="sub">Convert dog years based on size</div>
+    <div class="row2">
+    <div class="field"><label>Dog's Age (Years)</label><input type="number" id="dog-y" placeholder="4"></div>
+    <div class="field"><label>Size</label><select id="dog-s">
+    <option value="S">Small (&lt;10kg)</option><option value="M">Medium (10-25kg)</option><option value="L">Large (&gt;25kg)</option>
+    </select></div>
+    </div>
+    <button class="btn-calc" onclick="calcDog()">Calculate</button>
+    <div class="result-box" id="res-dog-age"></div>
+    </div></div>
+    
+    <!-- Day of Week -->
+    <div class="calc-panel" id="panel-day-of-week"><div class="calc-card">
+    <h2>📅 Day of the Week</h2><div class="sub">Find the day for any historical or future date</div>
+    <div class="row3">
+    <div class="field"><label>Day</label><input type="number" id="dow-d" placeholder="25" min="1" max="31"></div>
+    <div class="field"><label>Month</label><input type="number" id="dow-m" placeholder="6" min="1" max="12"></div>
+    <div class="field"><label>Year</label><input type="number" id="dow-y" placeholder="2026"></div>
+    </div>
+    <button class="btn-calc" onclick="calcDOW()">Find Day</button>
+    <div class="result-box" id="res-day-of-week"></div>
+    </div></div>
+    
+    <!-- GPA -->
+    <div class="calc-panel" id="panel-gpa"><div class="calc-card">
+    <h2>🎓 GPA Calculator</h2><div class="sub">Calculate your Grade Point Average</div>
+    <div id="gpa-rows">
+        <div class="gpa-row">
+            <input type="text" placeholder="Course Name (Optional)" class="g-name">
+            <select class="g-grade"><option value="4.0">A+</option><option value="4.0">A</option><option value="3.7">A-</option><option value="3.3">B+</option><option value="3.0">B</option><option value="2.7">B-</option><option value="2.3">C+</option><option value="2.0">C</option><option value="1.7">C-</option><option value="1.3">D+</option><option value="1.0">D</option><option value="0.0">F</option></select>
+            <input type="number" placeholder="Credits" class="g-cred" value="3">
+            <button class="rm-btn" onclick="this.parentElement.remove()">X</button>
+        </div>
+        <div class="gpa-row">
+            <input type="text" placeholder="Course Name (Optional)" class="g-name">
+            <select class="g-grade"><option value="4.0">A+</option><option value="4.0">A</option><option value="3.7">A-</option><option value="3.3">B+</option><option value="3.0" selected>B</option><option value="2.7">B-</option><option value="2.3">C+</option><option value="2.0">C</option><option value="1.7">C-</option><option value="1.3">D+</option><option value="1.0">D</option><option value="0.0">F</option></select>
+            <input type="number" placeholder="Credits" class="g-cred" value="3">
+            <button class="rm-btn" onclick="this.parentElement.remove()">X</button>
+        </div>
+    </div>
+    <button class="add-btn" onclick="addGPA()">+ Add Course</button>
+    <button class="btn-calc" onclick="calcGPA()">Calculate GPA</button>
+    <div class="result-box" id="res-gpa"></div>
+    </div></div>
+    
+    <!-- Tip -->
+    <div class="calc-panel" id="panel-tip"><div class="calc-card">
+    <h2>💵 Tip Calculator</h2><div class="sub">Calculate tip and split the bill</div>
+    <div class="row3">
+    <div class="field"><label>Bill Amount</label><input type="number" id="tip-b" placeholder="1250"></div>
+    <div class="field"><label>Tip %</label><input type="number" id="tip-p" placeholder="15" value="15"></div>
+    <div class="field"><label>People</label><input type="number" id="tip-n" placeholder="2" value="2"></div>
+    </div>
+    <div style="display:flex;gap:10px;margin-bottom:15px">
+        <button class="add-btn" style="flex:1;margin:0" onclick="document.getElementById('tip-p').value=10;calcTip()">10%</button>
+        <button class="add-btn" style="flex:1;margin:0" onclick="document.getElementById('tip-p').value=15;calcTip()">15%</button>
+        <button class="add-btn" style="flex:1;margin:0" onclick="document.getElementById('tip-p').value=18;calcTip()">18%</button>
+        <button class="add-btn" style="flex:1;margin:0" onclick="document.getElementById('tip-p').value=20;calcTip()">20%</button>
+    </div>
+    <button class="btn-calc" onclick="calcTip()">Calculate</button>
+    <div class="result-box" id="res-tip"></div>
+    </div></div>
+    
+    <!-- Password -->
+    <div class="calc-panel" id="panel-password"><div class="calc-card">
+    <h2>🔑 Password Generator</h2><div class="sub">Create secure, random passwords</div>
+    <div class="field"><label>Length: <span id="pw-len-val">16</span></label>
+    <input type="range" id="pw-l" min="8" max="64" value="16" oninput="document.getElementById('pw-len-val').innerText=this.value"></div>
+    <div class="row2">
+        <label class="checkbox-lbl"><input type="checkbox" id="pw-u" checked> Uppercase (A-Z)</label>
+        <label class="checkbox-lbl"><input type="checkbox" id="pw-lo" checked> Lowercase (a-z)</label>
+        <label class="checkbox-lbl"><input type="checkbox" id="pw-n" checked> Numbers (0-9)</label>
+        <label class="checkbox-lbl"><input type="checkbox" id="pw-s" checked> Symbols (!@#...)</label>
+    </div>
+    <button class="btn-calc" onclick="genPW()">Generate Password</button>
+    <div class="result-box" id="res-password" style="display:block">
+        <div class="big-num" id="pw-out" style="font-size:1.8rem;letter-spacing:2px">Click Generate</div>
+        <div class="str-bar"><div class="str-fill" id="pw-str" style="width:0;background:#EF4444"></div></div>
+    </div>
+    </div></div>
+    
+    <!-- Random -->
+    <div class="calc-panel" id="panel-random"><div class="calc-card">
+    <h2>🎲 Random Number Generator</h2>
+    <div class="row3">
+    <div class="field"><label>Min</label><input type="number" id="rng-min" value="1"></div>
+    <div class="field"><label>Max</label><input type="number" id="rng-max" value="100"></div>
+    <div class="field"><label>Count</label><input type="number" id="rng-c" value="5" max="1000"></div>
+    </div>
+    <div class="row2">
+        <label class="checkbox-lbl"><input type="checkbox" id="rng-d"> Allow Duplicates</label>
+        <label class="checkbox-lbl"><input type="checkbox" id="rng-s" checked> Sort Results</label>
+    </div>
+    <button class="btn-calc" onclick="genRNG()">Generate Numbers</button>
+    <div class="result-box" id="res-random"></div>
+    </div></div>
+    
+    <!-- Word Counter -->
+    <div class="calc-panel" id="panel-word-counter"><div class="calc-card">
+    <h2>📝 Word Counter</h2><div class="sub">Real-time statistics</div>
+    <div class="field"><textarea id="wc-txt" placeholder="Start typing or paste your text here..." oninput="updateWC()"></textarea></div>
+    <div class="word-stats">
+        <div class="word-stat"><span id="wc-w">0</span><label>Words</label></div>
+        <div class="word-stat"><span id="wc-c">0</span><label>Characters</label></div>
+        <div class="word-stat"><span id="wc-cns">0</span><label>No Spaces</label></div>
+        <div class="word-stat"><span id="wc-s">0</span><label>Sentences</label></div>
+        <div class="word-stat"><span id="wc-p">0</span><label>Paragraphs</label></div>
+        <div class="word-stat"><span id="wc-rt">0m</span><label>Read Time</label></div>
+    </div>
+    </div></div>
+    
+    <!-- Parlay -->
+    <div class="calc-panel" id="panel-parlay"><div class="calc-card">
+    <h2>🎰 Parlay Calculator</h2><div class="sub">Calculate odds for multiple legs (Decimal odds)</div>
+    <div id="parlay-legs">
+        <div class="field"><label>Leg 1 Odds</label><input type="number" class="p-leg" placeholder="1.90" step="0.01"></div>
+        <div class="field"><label>Leg 2 Odds</label><input type="number" class="p-leg" placeholder="2.10" step="0.01"></div>
+    </div>
+    <button class="add-btn" onclick="addParlay()">+ Add Leg</button>
+    <div class="field" style="margin-top:15px"><label>Stake Amount (₹)</label><input type="number" id="p-stake" placeholder="1000"></div>
+    <button class="btn-calc" onclick="calcParlay()">Calculate Parlay</button>
+    <div class="result-box" id="res-parlay"></div>
+    </div></div>
+
+</div>
+
+<footer class="site-footer">
+<div class="footer-nav">
+<a href="index.html" class="footer-link">Home</a><a href="privacy-policy.html" class="footer-link">Privacy</a><a href="terms.html" class="footer-link">Terms</a><a href="disclaimer.html" class="footer-link">Disclaimer</a><a href="contact.html" class="footer-link">Contact</a>
+</div>
+<p class="footer-copy">&copy; 2026 Aura Age. All rights reserved.</p>
+</footer>
+
+<script>
+// Tab switching
+document.querySelectorAll('.calc-tab').forEach(tab=>{
+tab.addEventListener('click',()=>{
+document.querySelectorAll('.calc-tab').forEach(t=>t.classList.remove('active'));
+document.querySelectorAll('.calc-panel').forEach(p=>p.classList.remove('active'));
+tab.classList.add('active');document.getElementById('panel-'+tab.dataset.t).classList.add('active');
+});
+});
+
+// Hash linking
+function activateHash(){const h=location.hash.replace('#','');if(!h)return;const t=document.querySelector('.calc-tab[data-t="'+h+'"]');if(t)t.click();}
+activateHash();window.addEventListener('hashchange',activateHash);
+
+function showRes(id,big,details,formula){
+let h='<div class="big-num">'+big+'</div>';
+details.forEach(d=>h+='<div class="detail"><span>'+d[0]+'</span><span>'+d[1]+'</span></div>');
+if(formula)h+='<div class="formula-box">'+formula+'</div>';
+const box=document.getElementById('res-'+id);box.innerHTML=h;box.classList.add('show');
+}
+
+// Cat Age
+function calcCat(){
+const y=parseFloat(document.getElementById('cat-y').value);if(isNaN(y))return;
+let hy=0,s='';
+if(y<=1){hy=y*15;s='Kitten / Junior';}else if(y<=2){hy=15+(y-1)*9;s='Junior';}else{hy=24+(y-2)*4;}
+if(y>2&&y<=6)s='Prime';else if(y>6&&y<=10)s='Mature';else if(y>10&&y<=14)s='Senior';else if(y>14)s='Geriatric';
+showRes('cat-age',hy+' Human Years',[['Cat Age',y+' Years'],['Life Stage',s]],'First year=15, Second=9, Next years=+4');
+}
+
+// Dog Age
+function calcDog(){
+const y=parseFloat(document.getElementById('dog-y').value);const s=document.getElementById('dog-s').value;if(isNaN(y))return;
+let hy=0,ls='';
+if(y<=1)hy=y*15;
+else if(y<=2)hy=15+(y-1)*9;
+else{let m=s==='S'?4:s==='M'?5:6;hy=24+(y-2)*m;}
+if(y<1)ls='Puppy';else if(y<3)ls='Young Adult';else if(y<7)ls='Mature Adult';else ls='Senior';
+showRes('dog-age',hy+' Human Years',[['Dog Age',y+' Years'],['Size',s==='S'?'Small':s==='M'?'Medium':'Large'],['Life Stage',ls]],'First year=15, Second=9, Next=+'+(s==='S'?4:s==='M'?5:6));
+}
+
+// Day of Week
+function calcDOW(){
+const d=+document.getElementById('dow-d').value,m=+document.getElementById('dow-m').value,y=+document.getElementById('dow-y').value;
+if(!d||!m||!y)return;
+const date=new Date(y,m-1,d);
+const days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const mNames=['January','February','March','April','May','June','July','August','September','October','November','December'];
+showRes('day-of-week',days[date.getDay()],[['Date',d+' '+mNames[m-1]+' '+y]],'Based on Gregorian Calendar rules');
+}
+
+// GPA
+function addGPA(){
+const div=document.createElement('div');div.className='gpa-row';
+div.innerHTML='<input type="text" placeholder="Course Name (Optional)" class="g-name"><select class="g-grade"><option value="4.0">A+</option><option value="4.0">A</option><option value="3.7">A-</option><option value="3.3">B+</option><option value="3.0">B</option><option value="2.7">B-</option><option value="2.3">C+</option><option value="2.0">C</option><option value="1.7">C-</option><option value="1.3">D+</option><option value="1.0">D</option><option value="0.0">F</option></select><input type="number" placeholder="Credits" class="g-cred" value="3"><button class="rm-btn" onclick="this.parentElement.remove()">X</button>';
+document.getElementById('gpa-rows').appendChild(div);
+}
+function calcGPA(){
+let tp=0,tc=0;
+document.querySelectorAll('.gpa-row').forEach(r=>{
+const g=parseFloat(r.querySelector('.g-grade').value);const c=parseFloat(r.querySelector('.g-cred').value);
+if(!isNaN(g)&&!isNaN(c)){tp+=g*c;tc+=c;}
+});
+if(tc===0)return;const gpa=tp/tc;
+showRes('gpa',gpa.toFixed(2),[['Total Credits',tc],['Total Points',tp.toFixed(1)]],'GPA = Total Grade Points / Total Credits');
+}
+
+// Tip
+function calcTip(){
+const b=parseFloat(document.getElementById('tip-b').value),p=parseFloat(document.getElementById('tip-p').value),n=parseFloat(document.getElementById('tip-n').value);
+if(isNaN(b)||isNaN(p)||isNaN(n))return;
+const tip=b*p/100;const tot=b+tip;const perP=tot/n;
+showRes('tip','₹'+perP.toFixed(2)+' / person',[['Bill','₹'+b.toFixed(2)],['Tip ('+p+'%)','₹'+tip.toFixed(2)],['Total','₹'+tot.toFixed(2)]],'');
+}
+
+// Password
+function genPW(){
+const len=parseInt(document.getElementById('pw-l').value);
+const u=document.getElementById('pw-u').checked,lo=document.getElementById('pw-lo').checked,n=document.getElementById('pw-n').checked,s=document.getElementById('pw-s').checked;
+const cu='ABCDEFGHIJKLMNOPQRSTUVWXYZ',clo='abcdefghijklmnopqrstuvwxyz',cn='0123456789',cs='!@#$%^&*()_+~`|}{[]:;?><,./-=';
+let chars='',pw='';
+if(u)chars+=cu;if(lo)chars+=clo;if(n)chars+=cn;if(s)chars+=cs;
+if(!chars)chars=clo;
+for(let i=0;i<len;i++)pw+=chars[Math.floor(Math.random()*chars.length)];
+document.getElementById('pw-out').innerText=pw;
+let str=0;if(len>=12)str++;if(len>=16)str++;if(u&&lo)str++;if(n)str++;if(s)str++;
+const bar=document.getElementById('pw-str');
+if(str<=2){bar.style.width='25%';bar.style.background='#EF4444';}
+else if(str===3){bar.style.width='50%';bar.style.background='#F59E0B';}
+else if(str===4){bar.style.width='75%';bar.style.background='#10B981';}
+else {bar.style.width='100%';bar.style.background='#059669';}
+}
+genPW();
+
+// Random
+function genRNG(){
+const min=parseInt(document.getElementById('rng-min').value),max=parseInt(document.getElementById('rng-max').value),c=parseInt(document.getElementById('rng-c').value);
+const dup=document.getElementById('rng-d').checked,srt=document.getElementById('rng-s').checked;
+if(isNaN(min)||isNaN(max)||isNaN(c)||min>max)return;
+if(!dup && c>(max-min+1))return;
+let res=[];
+if(dup){for(let i=0;i<c;i++)res.push(Math.floor(Math.random()*(max-min+1))+min);}
+else{let pool=[];for(let i=min;i<=max;i++)pool.push(i);for(let i=0;i<c;i++){const idx=Math.floor(Math.random()*pool.length);res.push(pool[idx]);pool.splice(idx,1);}}
+if(srt)res.sort((a,b)=>a-b);
+showRes('random',res.join(', '),[[]],'');
+}
+
+// Word counter
+function updateWC(){
+const txt=document.getElementById('wc-txt').value;
+const w=txt.trim().split(/\s+/).filter(x=>x.length>0).length;
+const c=txt.length;
+const cns=txt.replace(/\s/g,'').length;
+const s=txt.split(/[.!?]+/).filter(x=>x.trim().length>0).length;
+const p=txt.split(/\n+/).filter(x=>x.trim().length>0).length;
+document.getElementById('wc-w').innerText=w;
+document.getElementById('wc-c').innerText=c;
+document.getElementById('wc-cns').innerText=cns;
+document.getElementById('wc-s').innerText=s;
+document.getElementById('wc-p').innerText=p;
+document.getElementById('wc-rt').innerText=Math.max(1,Math.ceil(w/200))+'m';
+}
+
+// Parlay
+function addParlay(){
+const div=document.createElement('div');div.className='field';
+const i=document.querySelectorAll('.p-leg').length+1;
+div.innerHTML='<label>Leg '+i+' Odds</label><input type="number" class="p-leg" placeholder="1.90" step="0.01">';
+document.getElementById('parlay-legs').appendChild(div);
+}
+function calcParlay(){
+const legs=document.querySelectorAll('.p-leg');let mult=1,valid=0;
+legs.forEach(l=>{const v=parseFloat(l.value);if(!isNaN(v)&&v>0){mult*=v;valid++;}});
+if(valid<2)return;
+const stake=parseFloat(document.getElementById('p-stake').value)||0;
+const ret=stake*mult,prof=ret-stake,imp=(1/mult)*100;
+showRes('parlay',mult.toFixed(2)+' Odds',[['Legs',valid],['Implied Prob',imp.toFixed(2)+'%'],['Stake',stake?('₹'+stake.toFixed(2)):'-'],['Potential Return',stake?('₹'+ret.toFixed(2)):'-'],['Potential Profit',stake?('₹'+prof.toFixed(2)):'-']],'Parlay Odds = Leg1 × Leg2 × ...');
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Unit & Number Conversions — Aura Age</title>
+<meta name="description" content="Free conversion tools — Length, Weight, Temperature, Area, Volume, Time, Fractions, Roman Numerals and more.">
+<link rel="stylesheet" href="css/style.css">
+<style>
+.page-hero{text-align:center;padding:110px 20px 30px;max-width:800px;margin:0 auto}
+.page-hero h1{font-size:clamp(1.8rem,5vw,2.8rem);font-weight:900;margin-bottom:8px;background:linear-gradient(135deg,#34D399,#10B981,#047857);background-size:200% 200%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:gradFlow 5s ease infinite}
+.page-hero p{color:var(--text-muted);font-size:.95rem}
+.calc-tabs{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:900px;margin:0 auto 2rem;padding:0 20px}
+.calc-tab{padding:8px 16px;border-radius:50px;border:1.5px solid var(--card-border);background:var(--card-bg);color:var(--text-muted);font-size:.76rem;font-weight:600;cursor:pointer;transition:all .2s;font-family:'Space Grotesk',sans-serif;white-space:nowrap}
+.calc-tab:hover{border-color:rgba(16,185,129,.4);color:#6EE7B7;transform:translateY(-2px)}
+.calc-tab.active{background:linear-gradient(135deg,rgba(16,185,129,.22),rgba(52,211,153,.12));border-color:rgba(16,185,129,.55);color:#6EE7B7;box-shadow:0 4px 18px rgba(16,185,129,.18)}
+.calc-panel{display:none;max-width:680px;margin:0 auto;padding:0 20px 40px}
+.calc-panel.active{display:block;animation:fadeUp .35s ease both}
+.calc-card{backdrop-filter:blur(14px);background:var(--card-bg);border:1px solid var(--card-border);border-radius:22px;padding:2rem 1.5rem;position:relative;overflow:hidden}
+.calc-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#34D399,#10B981,#059669)}
+.calc-card h2{font-size:1.3rem;font-weight:800;color:var(--text-color);margin-bottom:6px;font-family:'Space Grotesk',sans-serif}
+.calc-card .sub{color:var(--text-muted);font-size:.82rem;margin-bottom:1.5rem}
+.field{margin-bottom:1rem}
+.field label{display:block;font-size:.75rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px}
+.field input,.field select{width:100%;padding:.75rem 1rem;border-radius:12px;border:1.5px solid var(--input-border);background:var(--input-bg);color:var(--text-color);font-size:.95rem;outline:none;font-family:inherit;transition:border-color .2s,box-shadow .2s}
+.field input:focus,.field select:focus{border-color:#10B981;box-shadow:0 0 0 3px rgba(16,185,129,.18)}
+.btn-calc{width:100%;padding:13px;border-radius:12px;border:none;background:linear-gradient(135deg,#34D399,#10B981);color:#fff;font-size:1rem;font-weight:700;cursor:pointer;margin-top:.5rem;transition:all .3s;font-family:'Space Grotesk',sans-serif}
+.btn-calc:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(16,185,129,.3)}
+.result-box{margin-top:1.5rem;padding:1.25rem;border-radius:16px;background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.18);display:none}
+.result-box.show{display:block;animation:fadeUp .3s ease both}
+.result-box .big-num{font-size:clamp(1.6rem,5vw,2.4rem);font-weight:900;background:linear-gradient(135deg,#34D399,#10B981,#047857);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-align:center;margin-bottom:.5rem;word-break:break-all}
+.result-box .detail{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.06);font-size:.85rem;color:var(--text-muted)}
+.result-box .detail span:last-child{color:var(--text-color);font-weight:600}
+.formula-box{margin-top:1rem;padding:10px 14px;border-radius:10px;background:rgba(0,0,0,.3);font-family:monospace;font-size:.75rem;color:rgba(255,255,255,.5);border-left:3px solid #10B981;line-height:1.6;word-break:break-all}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes gradFlow{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+@media(max-width:500px){.calc-tab{font-size:.7rem;padding:6px 12px}.row2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="site-header"><div class="nav-container">
+<a href="index.html" class="logo-link"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M12 6V12L16 14M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke="url(#lg)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><defs><linearGradient id="lg" x1="2" y1="2" x2="22" y2="22"><stop stop-color="#a855f7"/><stop offset="1" stop-color="#06b6d4"/></linearGradient></defs></svg><span class="logo-text">Aura Age</span></a>
+<div class="nav-actions"><a href="index.html" class="nav-menu-link">Home</a></div>
+</div></header>
+
+<div class="page-hero">
+<h1>🔄 Conversions</h1>
+<p>Unit & Number Conversions — length, weight, area, decimal/fraction, Roman numerals & more.</p>
+</div>
+
+<div class="calc-tabs" id="tabs"></div>
+<div id="panels"></div>
+
+<footer class="site-footer">
+<div class="footer-nav">
+<a href="index.html" class="footer-link">Home</a><a href="privacy-policy.html" class="footer-link">Privacy</a><a href="terms.html" class="footer-link">Terms</a><a href="disclaimer.html" class="footer-link">Disclaimer</a><a href="contact.html" class="footer-link">Contact</a>
+</div>
+<p class="footer-copy">&copy; 2026 Aura Age. All rights reserved.</p>
+</footer>
+
+<script>
+const F=v=>parseFloat(v);
+function gcd(a,b){a=Math.abs(a);b=Math.abs(b);while(b){[a,b]=[b,a%b];}return a;}
+const rom=[['M',1000],['CM',900],['D',500],['CD',400],['C',100],['XC',90],['L',50],['XL',40],['X',10],['IX',9],['V',5],['IV',4],['I',1]];
+
+const UNITS={
+length:{base:'m',units:{'mm':0.001,'cm':0.01,'m':1,'km':1000,'in':0.0254,'ft':0.3048,'yd':0.9144,'mi':1609.344,'nmi':1852},names:{'mm':'Millimeters','cm':'Centimeters','m':'Meters','km':'Kilometers','in':'Inches','ft':'Feet','yd':'Yards','mi':'Miles','nmi':'Nautical Miles'}},
+weight:{base:'kg',units:{'mg':0.000001,'g':0.001,'kg':1,'t':1000,'oz':0.028349523125,'lb':0.45359237,'st':6.35029318,'ton':907.18474},names:{'mg':'Milligrams','g':'Grams','kg':'Kilograms','t':'Tonnes','oz':'Ounces','lb':'Pounds','st':'Stones','ton':'US Tons'}},
+area:{base:'m2',units:{'mm2':0.000001,'cm2':0.0001,'m2':1,'km2':1000000,'in2':0.00064516,'ft2':0.09290304,'yd2':0.83612736,'ac':4046.8564224,'ha':10000},names:{'mm2':'Sq Millimeters','cm2':'Sq Centimeters','m2':'Sq Meters','km2':'Sq Kilometers','in2':'Sq Inches','ft2':'Sq Feet','yd2':'Sq Yards','ac':'Acres','ha':'Hectares'}},
+volume:{base:'l',units:{'ml':0.001,'l':1,'m3':1000,'cm3':0.001,'tsp':0.00492892,'tbsp':0.01478676,'floz':0.0295735,'cup':0.236588,'pt':0.473176,'qt':0.946353,'galUS':3.78541,'galUK':4.54609},names:{'ml':'Milliliters','l':'Liters','m3':'Cubic Meters','cm3':'Cubic Centimeters','tsp':'Teaspoons (US)','tbsp':'Tablespoons (US)','floz':'Fluid Ounces (US)','cup':'Cups (US)','pt':'Pints (US)','qt':'Quarts (US)','galUS':'Gallons (US)','galUK':'Gallons (UK)'}},
+pressure:{base:'pa',units:{'pa':1,'kpa':1000,'mpa':1000000,'bar':100000,'psi':6894.75729,'atm':101325,'torr':133.322368},names:{'pa':'Pascals','kpa':'Kilopascals','mpa':'Megapascals','bar':'Bars','psi':'PSI','atm':'Atmospheres','torr':'Torr / mmHg'}},
+time:{base:'s',units:{'s':1,'min':60,'h':3600,'d':86400,'w':604800,'mo':2592000,'y':31536000,'dec':315360000,'cen':3153600000},names:{'s':'Seconds','min':'Minutes','h':'Hours','d':'Days','w':'Weeks','mo':'Months (30d)','y':'Years (365d)','dec':'Decades','cen':'Centuries'}}
+};
+
+const CALCS=[
+{id:'length',icon:'📏',name:'Length',isUnit:true,cat:'length'},
+{id:'weight',icon:'⚖️',name:'Weight',isUnit:true,cat:'weight'},
+{id:'temperature',icon:'🌡️',name:'Temperature',fields:[{id:'tmp-v',label:'Value',ph:'100'},{id:'tmp-f',label:'From Unit',type:'select',opts:[['C','Celsius'],['F','Fahrenheit'],['K','Kelvin']]}],
+calc:f=>{const v=F(f[0]),u=f[1];let c,f_,k;
+if(u==='C'){c=v;f_=(v*9/5)+32;k=v+273.15;}else if(u==='F'){c=(v-32)*5/9;f_=v;k=(v-32)*5/9+273.15;}else{c=v-273.15;f_=(v-273.15)*9/5+32;k=v;}
+return{big:c.toFixed(2)+' °C',details:[['Celsius',c.toFixed(2)+' °C'],['Fahrenheit',f_.toFixed(2)+' °F'],['Kelvin',k.toFixed(2)+' K']],formula:'°C = (°F - 32) × 5/9 = K - 273.15'};}},
+{id:'area',icon:'📐',name:'Area',isUnit:true,cat:'area'},
+{id:'volume',icon:'💧',name:'Volume',isUnit:true,cat:'volume'},
+{id:'pressure',icon:'🗜️',name:'Pressure',isUnit:true,cat:'pressure'},
+{id:'time',icon:'⏱️',name:'Time',isUnit:true,cat:'time'},
+{id:'dec-frac',icon:'🔢',name:'Dec to Frac',fields:[{id:'df-v',label:'Decimal Number',ph:'0.75'}],
+calc:f=>{const v=F(f[0]);if(isNaN(v))return{};const len=(v.toString().split('.')[1]||'').length;const den=Math.pow(10,len);const num=Math.round(v*den);const g=gcd(num,den);
+return{big:(num/g)+' / '+den/g,details:[['Decimal',v],['Unsimplified',num+' / '+den],['Simplified',(num/g)+' / '+(den/g)]],formula:'Multiply by 10^'+len+' = '+num+'/'+den+' -> simplify by GCD = '+g};}},
+{id:'dec-pct',icon:'%️⃣',name:'Dec to Pct',fields:[{id:'dp-v',label:'Decimal Number',ph:'0.75'}],
+calc:f=>{const v=F(f[0]);return{big:(v*100)+'%',details:[['Decimal',v],['Percentage',(v*100)+'%'],['Fraction',(v*100)+'/100']],formula:'Percentage = Decimal × 100'};}},
+{id:'frac-dec',icon:'➗',name:'Frac to Dec',fields:[{id:'fd-n',label:'Numerator',ph:'3'},{id:'fd-d',label:'Denominator',ph:'4'}],
+calc:f=>{const n=F(f[0]),d=F(f[1]);return{big:(n/d).toPrecision(8).replace(/\.?0+$/,''),details:[['Fraction',n+' / '+d],['Decimal',(n/d)]],formula:'Decimal = Numerator ÷ Denominator'};}},
+{id:'frac-pct',icon:'💯',name:'Frac to Pct',fields:[{id:'fp-n',label:'Numerator',ph:'3'},{id:'fp-d',label:'Denominator',ph:'4'}],
+calc:f=>{const n=F(f[0]),d=F(f[1]);return{big:((n/d)*100).toPrecision(6).replace(/\.?0+$/,'')+'%',details:[['Fraction',n+' / '+d],['Percentage',((n/d)*100)+'%']],formula:'Percentage = (Numerator ÷ Denominator) × 100'};}},
+{id:'pct-dec',icon:'📉',name:'Pct to Dec',fields:[{id:'pd-v',label:'Percentage (%)',ph:'75'}],
+calc:f=>{const v=F(f[0]);return{big:(v/100).toPrecision(6).replace(/\.?0+$/,''),details:[['Percentage',v+'%'],['Decimal',(v/100)]],formula:'Decimal = Percentage ÷ 100'};}},
+{id:'pct-frac',icon:'🍰',name:'Pct to Frac',fields:[{id:'pf-v',label:'Percentage (%)',ph:'75'}],
+calc:f=>{const v=F(f[0]);const num=Math.round(v*100);const den=10000;const g=gcd(num,den);
+return{big:(num/g)+' / '+(den/g),details:[['Percentage',v+'%'],['Fraction',(num/g)+' / '+(den/g)]],formula:'Fraction = Percentage/100 -> '+(v*100)+'/10000 -> simplify'};}},
+{id:'roman',icon:'🏛️',name:'Roman Numerals',fields:[{id:'rn-v',label:'Number (1-3999) or Numeral (e.g. XIV)',ph:'2026',type:'text'}],
+calc:f=>{let v=f[0].trim().toUpperCase();let res='',isNum=/^\d+$/.test(v);
+if(isNum){
+let n=parseInt(v);if(n<1||n>3999)return{big:'Out of range'};
+let str='';for(let i=0;i<rom.length;i++){while(n>=rom[i][1]){str+=rom[i][0];n-=rom[i][1];}}
+return{big:str,details:[['Number',v],['Roman Numeral',str]],formula:'Converted using standard subtractive notation'};
+}else{
+let total=0,i=0;
+while(i<v.length){
+let currentVal=0,nextVal=0;
+for(let j=0;j<rom.length;j++){if(rom[j][0]===v[i]){currentVal=rom[j][1];break;}}
+if(i+1<v.length){for(let j=0;j<rom.length;j++){if(rom[j][0]===v[i+1]){nextVal=rom[j][1];break;}}}
+if(currentVal<nextVal){total+=(nextVal-currentVal);i+=2;}else{total+=currentVal;i++;}
+}
+return{big:total,details:[['Roman Numeral',v],['Number',total]],formula:'Calculated values of symbols'};
+}}}
+];
+
+CALCS.forEach(c=>{
+if(c.isUnit){
+const cat=UNITS[c.cat];
+const opts=Object.keys(cat.units).map(k=>[k,cat.names[k]]);
+c.fields=[
+{id:c.id+'-v',label:'Value',ph:'1'},
+{id:c.id+'-f',label:'From Unit',type:'select',opts:opts},
+{id:c.id+'-t',label:'To Unit',type:'select',opts:opts}
+];
+c.calc=f=>{
+const v=F(f[0]),fu=f[1],tu=f[2];
+const base=v*cat.units[fu];
+const target=base/cat.units[tu];
+let det=[];
+for(const k in cat.units){
+const val=base/cat.units[k];
+det.push([cat.names[k],val.toPrecision(7).replace(/\.?0+$/,'')+(val.toPrecision(7).indexOf('.')===-1?'.0':'').replace('.0','')]);
+}
+return{big:target.toPrecision(7).replace(/\.?0+$/,'')+' '+tu,details:det,formula:v+' '+fu+' = '+base+' '+cat.base+' = '+target+' '+tu};
+};
+}
+});
+
+const tabsEl=document.getElementById('tabs'),panelsEl=document.getElementById('panels');
+CALCS.forEach((c,i)=>{
+const tab=document.createElement('button');tab.className='calc-tab'+(i===0?' active':'');tab.dataset.idx=i;tab.textContent=c.icon+' '+c.name;tab.id='tab-'+c.id;
+tabsEl.appendChild(tab);
+
+let fieldsHTML='<div class="row2">';
+c.fields.forEach((f,idx)=>{
+if(idx===0 && c.fields.length%2!==0 && c.fields.length!==1) fieldsHTML+='</div>';
+if(f.type==='select'){
+fieldsHTML+='<div class="field"><label>'+f.label+'</label><select id="'+f.id+'">';
+f.opts.forEach(o=>fieldsHTML+='<option value="'+o[0]+'">'+o[1]+'</option>');
+fieldsHTML+='</select></div>';
+}else{
+fieldsHTML+='<div class="field"><label>'+f.label+'</label><input type="'+(f.type||'number')+'" id="'+f.id+'" placeholder="'+f.ph+'" step="any"></div>';
+}
+if(idx===0 && c.fields.length%2!==0 && c.fields.length!==1) fieldsHTML+='<div class="row2">';
+});
+if(c.fields.length!==1) fieldsHTML+='</div>';
+
+const panel=document.createElement('div');panel.className='calc-panel'+(i===0?' active':'');panel.id='panel-'+c.id;
+panel.innerHTML='<div class="calc-card"><h2>'+c.icon+' '+c.name+'</h2><div class="sub">Enter values below and hit Calculate</div>'+fieldsHTML+'<button class="btn-calc" id="btn-'+c.id+'">Calculate</button><div class="result-box" id="res-'+c.id+'"></div></div>';
+panelsEl.appendChild(panel);
+});
+
+// Tab switching
+document.querySelectorAll('.calc-tab').forEach(tab=>{
+tab.addEventListener('click',()=>{
+document.querySelectorAll('.calc-tab').forEach(t=>t.classList.remove('active'));
+document.querySelectorAll('.calc-panel').forEach(p=>p.classList.remove('active'));
+tab.classList.add('active');document.getElementById('panel-'+CALCS[tab.dataset.idx].id).classList.add('active');
+});
+});
+
+// Hash linking
+function activateHash(){const h=location.hash.replace('#','');if(!h)return;const t=document.getElementById('tab-'+h);if(t)t.click();}
+activateHash();window.addEventListener('hashchange',activateHash);
+
+// Calculate buttons
+CALCS.forEach(c=>{
+document.getElementById('btn-'+c.id).addEventListener('click',()=>{
+const vals=c.fields.map(f=>document.getElementById(f.id).value);
+if(vals.some(v=>!v&&v!=='0')){return;}
+try{
+const r=c.calc(vals);
+let html='<div class="big-num">'+r.big+'</div>';
+if(r.details) r.details.forEach(d=>html+='<div class="detail"><span>'+d[0]+'</span><span>'+d[1]+'</span></div>');
+if(r.formula) html+='<div class="formula-box">'+r.formula+'</div>';
+const box=document.getElementById('res-'+c.id);box.innerHTML=html;box.classList.add('show');
+}catch(e){}
+});
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Math Calculators — Aura Age</title>
+<meta name="description" content="Free math calculators — Fractions, GCF, LCM, LCD, Percentage, Rounding, Square Root and more.">
+<link rel="stylesheet" href="css/style.css">
+<style>
+.page-hero{text-align:center;padding:110px 20px 30px;max-width:800px;margin:0 auto}
+.page-hero h1{font-size:clamp(1.8rem,5vw,2.8rem);font-weight:900;margin-bottom:8px;background:linear-gradient(135deg,#22D3EE,#34D399,#A78BFA);background-size:200% 200%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:gradFlow 5s ease infinite}
+.page-hero p{color:var(--text-muted);font-size:.95rem}
+.calc-tabs{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:900px;margin:0 auto 2rem;padding:0 20px}
+.calc-tab{padding:8px 18px;border-radius:50px;border:1.5px solid var(--card-border);background:var(--card-bg);color:var(--text-muted);font-size:.78rem;font-weight:600;cursor:pointer;transition:all .2s;font-family:'Space Grotesk',sans-serif;white-space:nowrap}
+.calc-tab:hover{border-color:rgba(34,211,238,.4);color:#67E8F9;transform:translateY(-2px)}
+.calc-tab.active{background:linear-gradient(135deg,rgba(34,211,238,.22),rgba(52,211,153,.12));border-color:rgba(34,211,238,.55);color:#67E8F9;box-shadow:0 4px 18px rgba(34,211,238,.18)}
+.calc-panel{display:none;max-width:680px;margin:0 auto;padding:0 20px 40px}
+.calc-panel.active{display:block;animation:fadeUp .35s ease both}
+.calc-card{backdrop-filter:blur(14px);background:var(--card-bg);border:1px solid var(--card-border);border-radius:22px;padding:2rem 1.5rem;position:relative;overflow:hidden}
+.calc-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#22D3EE,#34D399,#A78BFA)}
+.calc-card h2{font-size:1.3rem;font-weight:800;color:var(--text-color);margin-bottom:6px;font-family:'Space Grotesk',sans-serif}
+.calc-card .sub{color:var(--text-muted);font-size:.82rem;margin-bottom:1.5rem}
+.field{margin-bottom:1rem}
+.field label{display:block;font-size:.75rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px}
+.field input,.field select{width:100%;padding:.75rem 1rem;border-radius:12px;border:1.5px solid var(--input-border);background:var(--input-bg);color:var(--text-color);font-size:.95rem;outline:none;font-family:inherit;transition:border-color .2s,box-shadow .2s}
+.field input:focus,.field select:focus{border-color:#22D3EE;box-shadow:0 0 0 3px rgba(34,211,238,.18)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.row3{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:end}
+.row3 .op-label{text-align:center;font-size:1.5rem;font-weight:900;color:#22D3EE;padding-bottom:12px}
+.btn-calc{width:100%;padding:13px;border-radius:12px;border:none;background:linear-gradient(135deg,#22D3EE,#34D399);color:#fff;font-size:1rem;font-weight:700;cursor:pointer;margin-top:.5rem;transition:all .3s;font-family:'Space Grotesk',sans-serif}
+.btn-calc:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(34,211,238,.3)}
+.result-box{margin-top:1.5rem;padding:1.25rem;border-radius:16px;background:rgba(34,211,238,.06);border:1px solid rgba(34,211,238,.18);display:none}
+.result-box.show{display:block;animation:fadeUp .3s ease both}
+.result-box .big-num{font-size:clamp(1.6rem,5vw,2.4rem);font-weight:900;background:linear-gradient(135deg,#22D3EE,#34D399,#A78BFA);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-align:center;margin-bottom:.5rem}
+.result-box .detail{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.06);font-size:.85rem;color:var(--text-muted)}
+.result-box .detail span:last-child{color:var(--text-color);font-weight:600}
+.formula-box{margin-top:1rem;padding:10px 14px;border-radius:10px;background:rgba(0,0,0,.3);font-family:monospace;font-size:.75rem;color:rgba(255,255,255,.5);border-left:3px solid #22D3EE;line-height:1.6}
+.sub-tabs{display:flex;gap:6px;margin-bottom:1rem}
+.sub-tab{padding:6px 14px;border-radius:8px;border:1px solid var(--card-border);background:transparent;color:var(--text-muted);font-size:.75rem;cursor:pointer;font-weight:600;transition:all .2s}
+.sub-tab.active{background:rgba(34,211,238,.15);color:#67E8F9;border-color:rgba(34,211,238,.4)}
+.sub-panel{display:none}.sub-panel.active{display:block}
+.tag{display:inline-block;padding:2px 8px;border-radius:6px;font-size:.72rem;font-weight:700;background:rgba(52,211,153,.15);color:#34D399;margin-left:8px}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes gradFlow{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+@media(max-width:500px){.row2,.row3{grid-template-columns:1fr}.calc-tab{font-size:.72rem;padding:7px 14px}}
+</style>
+</head>
+<body>
+<header class="site-header"><div class="nav-container">
+<a href="index.html" class="logo-link"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M12 6V12L16 14M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke="url(#lg)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><defs><linearGradient id="lg" x1="2" y1="2" x2="22" y2="22"><stop stop-color="#a855f7"/><stop offset="1" stop-color="#06b6d4"/></linearGradient></defs></svg><span class="logo-text">Aura Age</span></a>
+<div class="nav-actions"><a href="index.html" class="nav-menu-link">Home</a></div>
+</div></header>
+
+<div class="page-hero">
+<h1>➗ Math Calculators</h1>
+<p>Fractions, percentages, roots & more — instant and accurate.</p>
+</div>
+
+<div class="calc-tabs" id="tabs">
+<button class="calc-tab active" data-t="fraction">➗ Fraction</button>
+<button class="calc-tab" data-t="simplifier">✂️ Simplifier</button>
+<button class="calc-tab" data-t="gcf">🔗 GCF</button>
+<button class="calc-tab" data-t="lcm">🔢 LCM</button>
+<button class="calc-tab" data-t="lcd">📐 LCD</button>
+<button class="calc-tab" data-t="percentage">💯 Percentage</button>
+<button class="calc-tab" data-t="rounding">🎯 Rounding</button>
+<button class="calc-tab" data-t="sqrt">√ Square Root</button>
+</div>
+
+<!-- FRACTION CALCULATOR -->
+<div class="calc-panel active" id="p-fraction"><div class="calc-card">
+<h2>➗ Fraction Calculator</h2><div class="sub">Add, subtract, multiply or divide two fractions</div>
+<div class="row3">
+<div><div class="field"><label>Numerator 1</label><input type="number" id="f-n1" placeholder="3"></div>
+<div class="field"><label>Denominator 1</label><input type="number" id="f-d1" placeholder="4"></div></div>
+<div class="op-label"><select id="f-op" style="font-size:1.2rem;padding:8px;border-radius:10px;border:1.5px solid var(--input-border);background:var(--input-bg);color:#22D3EE;text-align:center;font-weight:800;width:60px"><option>+</option><option>−</option><option>×</option><option>÷</option></select></div>
+<div><div class="field"><label>Numerator 2</label><input type="number" id="f-n2" placeholder="1"></div>
+<div class="field"><label>Denominator 2</label><input type="number" id="f-d2" placeholder="2"></div></div>
+</div>
+<button class="btn-calc" id="btn-fraction">Calculate</button>
+<div class="result-box" id="res-fraction"></div>
+</div></div>
+
+<!-- FRACTION SIMPLIFIER -->
+<div class="calc-panel" id="p-simplifier"><div class="calc-card">
+<h2>✂️ Fraction Simplifier</h2><div class="sub">Reduce a fraction to its lowest terms</div>
+<div class="row2">
+<div class="field"><label>Numerator</label><input type="number" id="s-n" placeholder="24"></div>
+<div class="field"><label>Denominator</label><input type="number" id="s-d" placeholder="36"></div>
+</div>
+<button class="btn-calc" id="btn-simplifier">Simplify</button>
+<div class="result-box" id="res-simplifier"></div>
+</div></div>
+
+<!-- GCF -->
+<div class="calc-panel" id="p-gcf"><div class="calc-card">
+<h2>🔗 GCF Calculator</h2><div class="sub">Greatest Common Factor of two or three numbers</div>
+<div class="row2">
+<div class="field"><label>Number 1</label><input type="number" id="gcf-a" placeholder="24"></div>
+<div class="field"><label>Number 2</label><input type="number" id="gcf-b" placeholder="36"></div>
+</div>
+<div class="field"><label>Number 3 (optional)</label><input type="number" id="gcf-c" placeholder=""></div>
+<button class="btn-calc" id="btn-gcf">Find GCF</button>
+<div class="result-box" id="res-gcf"></div>
+</div></div>
+
+<!-- LCM -->
+<div class="calc-panel" id="p-lcm"><div class="calc-card">
+<h2>🔢 LCM Calculator</h2><div class="sub">Least Common Multiple</div>
+<div class="row2">
+<div class="field"><label>Number 1</label><input type="number" id="lcm-a" placeholder="12"></div>
+<div class="field"><label>Number 2</label><input type="number" id="lcm-b" placeholder="18"></div>
+</div>
+<div class="field"><label>Number 3 (optional)</label><input type="number" id="lcm-c" placeholder=""></div>
+<button class="btn-calc" id="btn-lcm">Find LCM</button>
+<div class="result-box" id="res-lcm"></div>
+</div></div>
+
+<!-- LCD -->
+<div class="calc-panel" id="p-lcd"><div class="calc-card">
+<h2>📐 LCD Calculator</h2><div class="sub">Least Common Denominator of two fractions</div>
+<div class="row2">
+<div class="field"><label>Denominator 1</label><input type="number" id="lcd-a" placeholder="4"></div>
+<div class="field"><label>Denominator 2</label><input type="number" id="lcd-b" placeholder="6"></div>
+</div>
+<button class="btn-calc" id="btn-lcd">Find LCD</button>
+<div class="result-box" id="res-lcd"></div>
+</div></div>
+
+<!-- PERCENTAGE -->
+<div class="calc-panel" id="p-percentage"><div class="calc-card">
+<h2>💯 Percentage Calculator</h2><div class="sub">Three common percentage calculations</div>
+<div class="sub-tabs">
+<button class="sub-tab active" data-sp="pct-a">What is X% of Y?</button>
+<button class="sub-tab" data-sp="pct-b">X is what % of Y?</button>
+<button class="sub-tab" data-sp="pct-c">X is Y% of what?</button>
+</div>
+<div class="sub-panel active" id="sp-pct-a">
+<div class="row2">
+<div class="field"><label>Percentage (%)</label><input type="number" id="pa-x" placeholder="25"></div>
+<div class="field"><label>Of Number</label><input type="number" id="pa-y" placeholder="200"></div>
+</div>
+<button class="btn-calc" onclick="calcPctA()">Calculate</button>
+</div>
+<div class="sub-panel" id="sp-pct-b">
+<div class="row2">
+<div class="field"><label>Number X</label><input type="number" id="pb-x" placeholder="50"></div>
+<div class="field"><label>Number Y</label><input type="number" id="pb-y" placeholder="200"></div>
+</div>
+<button class="btn-calc" onclick="calcPctB()">Calculate</button>
+</div>
+<div class="sub-panel" id="sp-pct-c">
+<div class="row2">
+<div class="field"><label>Number X</label><input type="number" id="pc-x" placeholder="50"></div>
+<div class="field"><label>Percentage Y (%)</label><input type="number" id="pc-y" placeholder="25"></div>
+</div>
+<button class="btn-calc" onclick="calcPctC()">Calculate</button>
+</div>
+<div class="result-box" id="res-percentage"></div>
+</div></div>
+
+<!-- ROUNDING -->
+<div class="calc-panel" id="p-rounding"><div class="calc-card">
+<h2>🎯 Rounding Numbers</h2><div class="sub">Round any number to your desired precision</div>
+<div class="field"><label>Number</label><input type="number" id="rnd-n" placeholder="3.14159" step="any"></div>
+<div class="field"><label>Round to</label><select id="rnd-to">
+<option value="0">Whole Number</option><option value="1">1 Decimal</option><option value="2" selected>2 Decimals</option><option value="3">3 Decimals</option><option value="-1">Nearest 10</option><option value="-2">Nearest 100</option><option value="-3">Nearest 1000</option>
+</select></div>
+<button class="btn-calc" id="btn-rounding">Round</button>
+<div class="result-box" id="res-rounding"></div>
+</div></div>
+
+<!-- SQUARE ROOT -->
+<div class="calc-panel" id="p-sqrt"><div class="calc-card">
+<h2>√ Square Root Calculator</h2><div class="sub">Find roots, squares, and cubes</div>
+<div class="field"><label>Number</label><input type="number" id="sqrt-n" placeholder="144" step="any"></div>
+<button class="btn-calc" id="btn-sqrt">Calculate</button>
+<div class="result-box" id="res-sqrt"></div>
+</div></div>
+
+<footer class="site-footer">
+<div class="footer-nav">
+<a href="index.html" class="footer-link">Home</a><a href="privacy-policy.html" class="footer-link">Privacy</a><a href="terms.html" class="footer-link">Terms</a><a href="disclaimer.html" class="footer-link">Disclaimer</a><a href="contact.html" class="footer-link">Contact</a>
+</div>
+<p class="footer-copy">&copy; 2026 Aura Age. All rights reserved.</p>
+</footer>
+
+<script>
+// Tab switching
+document.querySelectorAll('.calc-tab').forEach(t=>{
+t.addEventListener('click',()=>{
+document.querySelectorAll('.calc-tab').forEach(x=>x.classList.remove('active'));
+document.querySelectorAll('.calc-panel').forEach(x=>x.classList.remove('active'));
+t.classList.add('active');
+document.getElementById('p-'+t.dataset.t).classList.add('active');
+});
+});
+// Sub-tab switching
+document.querySelectorAll('.sub-tab').forEach(t=>{
+t.addEventListener('click',()=>{
+t.parentElement.querySelectorAll('.sub-tab').forEach(x=>x.classList.remove('active'));
+t.classList.add('active');
+const card=t.closest('.calc-card');
+card.querySelectorAll('.sub-panel').forEach(x=>x.classList.remove('active'));
+document.getElementById('sp-'+t.dataset.sp).classList.add('active');
+});
+});
+// Hash linking
+function activateHash(){const h=location.hash.replace('#','');if(!h)return;const t=document.querySelector('.calc-tab[data-t="'+h+'"]');if(t)t.click();}
+activateHash();window.addEventListener('hashchange',activateHash);
+
+function gcd(a,b){a=Math.abs(a);b=Math.abs(b);while(b){[a,b]=[b,a%b];}return a;}
+function lcm(a,b){return Math.abs(a*b)/gcd(a,b);}
+function showRes(id,big,details,formula){
+let h='<div class="big-num">'+big+'</div>';
+details.forEach(d=>h+='<div class="detail"><span>'+d[0]+'</span><span>'+d[1]+'</span></div>');
+if(formula)h+='<div class="formula-box">'+formula+'</div>';
+const box=document.getElementById('res-'+id);box.innerHTML=h;box.classList.add('show');
+}
+
+// Fraction Calculator
+document.getElementById('btn-fraction').addEventListener('click',()=>{
+let n1=+document.getElementById('f-n1').value,d1=+document.getElementById('f-d1').value;
+let n2=+document.getElementById('f-n2').value,d2=+document.getElementById('f-d2').value;
+const op=document.getElementById('f-op').value;
+if(!d1||!d2)return;
+let rn,rd;
+if(op==='+'){rn=n1*d2+n2*d1;rd=d1*d2;}
+else if(op==='−'){rn=n1*d2-n2*d1;rd=d1*d2;}
+else if(op==='×'){rn=n1*n2;rd=d1*d2;}
+else{rn=n1*d2;rd=d1*n2;}
+const g=gcd(rn,rd);const sn=rn/g,sd=rd/g;
+const sign=sd<0?-1:1;
+showRes('fraction',sign*sn+' / '+Math.abs(sd),[
+['Operation',n1+'/'+d1+' '+op+' '+n2+'/'+d2],
+['Unsimplified',rn+'/'+rd],
+['Simplified',sign*sn+'/'+Math.abs(sd)],
+['Decimal',(rn/rd).toFixed(6)]
+],'GCD('+Math.abs(rn)+', '+Math.abs(rd)+') = '+g);
+});
+
+// Simplifier
+document.getElementById('btn-simplifier').addEventListener('click',()=>{
+const n=+document.getElementById('s-n').value,d=+document.getElementById('s-d').value;
+if(!d)return;const g=gcd(n,d);
+showRes('simplifier',n/g+' / '+d/g,[['Original',n+'/'+d],['GCD',g],['Simplified',(n/g)+'/'+(d/g)],['Decimal',(n/d).toFixed(6)]],'GCD('+n+', '+d+') = '+g+' → divide both by '+g);
+});
+
+// GCF
+document.getElementById('btn-gcf').addEventListener('click',()=>{
+const a=+document.getElementById('gcf-a').value,b=+document.getElementById('gcf-b').value,c=document.getElementById('gcf-c').value;
+if(!a||!b)return;
+let result=gcd(a,b);
+let nums=a+', '+b;
+if(c){result=gcd(result,+c);nums+=', '+c;}
+showRes('gcf',result,[['Numbers',nums],['GCF',result]],'Euclidean: GCF('+a+','+b+') → '+a+' mod '+b+' = '+(a%b));
+});
+
+// LCM
+document.getElementById('btn-lcm').addEventListener('click',()=>{
+const a=+document.getElementById('lcm-a').value,b=+document.getElementById('lcm-b').value,c=document.getElementById('lcm-c').value;
+if(!a||!b)return;
+let result=lcm(a,b);let nums=a+', '+b;
+if(c){result=lcm(result,+c);nums+=', '+c;}
+showRes('lcm',result,[['Numbers',nums],['LCM',result]],'LCM(a,b) = |a×b| / GCF(a,b) = '+(a*b)+' / '+gcd(a,b));
+});
+
+// LCD
+document.getElementById('btn-lcd').addEventListener('click',()=>{
+const a=+document.getElementById('lcd-a').value,b=+document.getElementById('lcd-b').value;
+if(!a||!b)return;
+const l=lcm(a,b);
+showRes('lcd',l,[['Denominator 1',a+' → multiply by '+(l/a)],['Denominator 2',b+' → multiply by '+(l/b)],['LCD',l]],'LCD = LCM('+a+', '+b+') = '+l);
+});
+
+// Percentage
+function calcPctA(){const x=+document.getElementById('pa-x').value,y=+document.getElementById('pa-y').value;const r=x*y/100;
+showRes('percentage',r,[['Calculation',x+'% of '+y],['Result',r]],x+'% × '+y+' = ('+x+'/100) × '+y+' = '+r);}
+function calcPctB(){const x=+document.getElementById('pb-x').value,y=+document.getElementById('pb-y').value;const r=(x/y)*100;
+showRes('percentage',r.toFixed(2)+'%',[['Calculation',x+' is what % of '+y+'?'],['Result',r.toFixed(2)+'%']],'('+x+' / '+y+') × 100 = '+r.toFixed(2)+'%');}
+function calcPctC(){const x=+document.getElementById('pc-x').value,y=+document.getElementById('pc-y').value;const r=x/(y/100);
+showRes('percentage',r.toFixed(2),[['Calculation',x+' is '+y+'% of what?'],['Result',r.toFixed(2)]],x+' / ('+y+'/100) = '+r.toFixed(2));}
+
+// Rounding
+document.getElementById('btn-rounding').addEventListener('click',()=>{
+const n=parseFloat(document.getElementById('rnd-n').value),p=+document.getElementById('rnd-to').value;
+if(isNaN(n))return;
+let result;
+if(p>=0){result=parseFloat(n.toFixed(p));}
+else{const factor=Math.pow(10,Math.abs(p));result=Math.round(n/factor)*factor;}
+showRes('rounding',result,[['Original',n],['Rounded',result],['Precision',p>=0?p+' decimal(s)':'nearest '+Math.pow(10,Math.abs(p))]],'');
+});
+
+// Square Root
+document.getElementById('btn-sqrt').addEventListener('click',()=>{
+const n=parseFloat(document.getElementById('sqrt-n').value);
+if(isNaN(n))return;
+const sq=Math.sqrt(n);const isPerfect=Number.isInteger(sq);
+const cube=Math.cbrt(n);
+showRes('sqrt',(isPerfect?sq:sq.toFixed(8))+(isPerfect?' <span class="tag">Perfect Square!</span>':''),[
+['√'+n,isPerfect?sq:sq.toFixed(8)],
+['∛'+n,Number.isInteger(cube)?cube:cube.toFixed(8)],
+[n+'²',(n*n).toLocaleString()],
+[n+'³',(n*n*n).toLocaleString()]
+],'√'+n+' = '+sq.toFixed(8));
+});
+</script>
+</body>
+</html>

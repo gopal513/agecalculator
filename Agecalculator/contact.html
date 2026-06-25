@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - Aura Age Calculator</title>
+    
+    <!-- SEO Optimization -->
+    <meta name="description" content="Get in touch with the Aura Age team. Send feedback, report bugs, or request features using our glassmorphic contact form.">
+    <meta name="robots" content="noindex, follow">
+    <link rel="canonical" href="contact.html">
+    
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- Particle canvas overlay -->
+    <canvas id="particle-canvas"></canvas>
+
+    <!-- Navigation Header -->
+    <header class="site-header">
+        <div class="nav-container">
+            <a href="index.html" class="logo-link" id="home-logo">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 6V12L16 14M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke="url(#logo-grad)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <defs>
+                        <linearGradient id="logo-grad" x1="2" y1="2" x2="22" y2="22" gradientUnits="userSpaceOnUse">
+                            <stop stop-color="#a855f7" />
+                            <stop offset="1" stop-color="#06b6d4" />
+                        </linearGradient>
+                    </defs>
+                </svg>
+                <span class="logo-text">Aura Age</span>
+            </a>
+            <div class="nav-actions">
+                <a href="index.html" class="nav-menu-link">Home</a>
+                <button class="theme-toggle-btn" id="theme-toggle" aria-label="Toggle light and dark mode">
+                    <svg class="sun-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="5" stroke-width="2" stroke-linecap="round"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3" stroke-width="2" stroke-linecap="round"></line>
+                        <line x1="12" y1="21" x2="12" y2="23" stroke-width="2" stroke-linecap="round"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" stroke-width="2" stroke-linecap="round"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" stroke-width="2" stroke-linecap="round"></line>
+                        <line x1="1" y1="12" x2="3" y2="12" stroke-width="2" stroke-linecap="round"></line>
+                        <line x1="21" y1="12" x2="23" y2="12" stroke-width="2" stroke-linecap="round"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" stroke-width="2" stroke-linecap="round"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" stroke-width="2" stroke-linecap="round"></line>
+                    </svg>
+                    <svg class="moon-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="legal-container">
+        
+        <a href="index.html" class="back-to-home">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            Back to Home
+        </a>
+
+        <article class="glass-card legal-card" style="max-width: 650px; margin: 0 auto;">
+            <div class="legal-header" style="text-align: center; margin-bottom: 25px;">
+                <h1 class="legal-title">Contact Us</h1>
+                <p style="color: var(--text-muted);">Have questions or feedback? Drop us a line below and we'll get back to you shortly.</p>
+            </div>
+
+            <!-- Form -->
+            <form id="contact-form" class="contact-form">
+                <div class="form-group">
+                    <label for="c-name" class="form-label">Full Name</label>
+                    <input type="text" id="c-name" class="glass-input" placeholder="Your Name" required aria-required="true">
+                </div>
+                
+                <div class="form-group">
+                    <label for="c-email" class="form-label">Email Address</label>
+                    <input type="email" id="c-email" class="glass-input" placeholder="name@domain.com" required aria-required="true">
+                </div>
+                
+                <div class="form-group">
+                    <label for="c-message" class="form-label">Message</label>
+                    <textarea id="c-message" class="glass-input" rows="5" placeholder="Write your message here..." style="resize: vertical; min-height: 120px;" required aria-required="true"></textarea>
+                </div>
+
+                <button type="submit" class="glass-btn" id="send-btn">
+                    <span>Send Message</span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="22" y1="2" x2="11" y2="13"></line>
+                        <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                    </svg>
+                </button>
+            </form>
+            
+            <!-- Dynamic Status Messages -->
+            <div id="contact-status" class="form-status"></div>
+        </article>
+
+    </main>
+
+    <!-- Footer Area -->
+    <footer class="site-footer">
+        <div class="footer-nav">
+            <a href="index.html" class="footer-link">Home</a>
+            <a href="privacy-policy.html" class="footer-link">Privacy Policy</a>
+            <a href="terms.html" class="footer-link">Terms & Conditions</a>
+            <a href="disclaimer.html" class="footer-link">Disclaimer</a>
+            <a href="contact.html" class="footer-link">Contact Us</a>
+        </div>
+        <p class="footer-copy">&copy; 2026 Aura Age. Built for speed and visual elegance. All rights reserved.</p>
+    </footer>
+
+    <!-- Main JS -->
+    <script src="js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('contact-form');
+            const statusBox = document.getElementById('contact-status');
+            const sendBtn = document.getElementById('send-btn');
+            
+            if (form && statusBox) {
+                form.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    
+                    // Simple validation check
+                    const name = document.getElementById('c-name').value.trim();
+                    const email = document.getElementById('c-email').value.trim();
+                    const message = document.getElementById('c-message').value.trim();
+                    
+                    if (!name || !email || !message) {
+                        statusBox.textContent = "Please fill in all fields.";
+                        statusBox.className = "form-status error";
+                        return;
+                    }
+                    
+                    // Disable button
+                    sendBtn.disabled = true;
+                    sendBtn.style.opacity = 0.7;
+                    statusBox.textContent = "Opening your email client...";
+                    statusBox.className = "form-status success";
+                    
+                    // Open Mailto Link
+                    const subject = encodeURIComponent("New message from Aura Age Contact Form");
+                    const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`);
+                    window.location.href = `mailto:gopalbingi35721@gmail.com?subject=${subject}&body=${body}`;
+                    
+                    setTimeout(() => {
+                        statusBox.textContent = `Email client opened to contact gopalbingi35721@gmail.com. Thank you!`;
+                        form.reset();
+                        sendBtn.disabled = false;
+                        sendBtn.style.opacity = 1;
+                    }, 2000);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
